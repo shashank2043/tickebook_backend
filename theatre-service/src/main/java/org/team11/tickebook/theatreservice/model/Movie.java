@@ -3,31 +3,31 @@ package org.team11.tickebook.theatreservice.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TheatreOwnerProfile {
+@Data
+public class Movie {
     @Id
     @GeneratedValue
     private UUID id;
-    private UUID userId;
-    private String businessName;
-    private String businessEmail;
-    private String businessAddress;
-    private Boolean isVerified;
-    @OneToMany
-    private List<Theatre> theatres;
+    private String title;
+    private String language;
+    private Integer durationInMinutes;
+    private String genre;
+    private String rating;
+    private LocalDate releaseDate;
+    private String description;
+    private String posterUrl;
+    private boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
