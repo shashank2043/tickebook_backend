@@ -8,22 +8,22 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Theatre {
+public class Screen {
     @Id
     @GeneratedValue
-    private UUID id;
-    private String city;
+    private Long id;
     private String name;
+    private Integer screenNumber;
+    private Integer totalSeats;
     private Boolean isActive;
     @ManyToOne
-    private TheatreOwnerProfile ownerProfile;
+    private Theatre theatre;
+    @OneToMany
+    private List<Seat> seats;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    @OneToMany
-    private List<Screen> screens;
 }
