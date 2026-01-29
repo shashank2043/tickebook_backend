@@ -1,12 +1,9 @@
 package org.team11.tickebook.adminservice.model;
 
 import jakarta.persistence.*;
-import jdk.jshell.Snippet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,14 +12,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class TheaterApprovalRequest {
+public class TheatreApprovalRequest {
     @Id
     @GeneratedValue
     private UUID id;
     private UUID theaterId;
     private UUID theaterOwnerProfileId;
     @Enumerated(EnumType.STRING)
-    private ApprovalStatus approvalStatus;
+    private ApprovalStatus status;
+    private UUID OwnerProfile;
 
     @OneToOne
     @JoinColumn(name="admin_id")
@@ -30,6 +28,5 @@ public class TheaterApprovalRequest {
     private LocalDateTime reviewedAt;
     private String remarks;
     private LocalDateTime createdAt;
-
 
 }
