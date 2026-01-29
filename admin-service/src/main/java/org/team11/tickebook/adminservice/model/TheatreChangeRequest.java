@@ -12,21 +12,28 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Entity
-public class RoleElevationRequest {
+public class TheatreChangeRequest {
     @Id
     @GeneratedValue
     private UUID id;
-    private UUID requestedBy;
+    private UUID theaterId;
     @Enumerated(EnumType.STRING)
-    private Role requestedRole;
-    private Role currentRole;
+    private ChangeType changeType;
+    private String oldValue;
+    private String newValue;
     @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
 
-    @OneToOne
+    private UUID requestedBy;
+
+    @ManyToOne
     private AdminProfile reviewedBy;
     private LocalDateTime reviewedAt;
     private String remarks;
     private LocalDateTime createdAt;
+
+
+
+
 
 }
