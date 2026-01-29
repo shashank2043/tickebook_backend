@@ -12,11 +12,12 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "shows")
 public class Show {
     @GeneratedValue
     @Id
     private UUID id;
-    @OneToOne
+    @ManyToOne
     private Screen screen;
     @OneToOne
     private Movie movie;
