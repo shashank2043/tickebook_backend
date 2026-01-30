@@ -1,6 +1,7 @@
 package org.team11.tickebook.adminservice.controller;
 
-import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.team11.tickebook.adminservice.dto.TheatreApprovalRequestDto;
@@ -11,10 +12,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/theatre-approval-requests")
-@RequiredArgsConstructor
 public class TheatreApprovalRequestController {
-
-    private final TheatreApprovalRequestService service;
+	@Autowired
+    private TheatreApprovalRequestService service;
 
     @PostMapping
     public ResponseEntity<TheatreApprovalResponseDto> createRequest(

@@ -1,4 +1,4 @@
-package org.team11.tickebook.theatreservice.model;
+package org.team11.tickebook.movie_service.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -72,5 +72,6 @@
     <module>admin-service</module>
     <module>theatre-service</module>
     <module>consumer-service</module>
+    <module>movie-service</module>
 </modules>
 </project>
