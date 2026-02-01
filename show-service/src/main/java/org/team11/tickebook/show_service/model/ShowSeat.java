@@ -27,5 +27,6 @@ public class ShowSeat {
     private LocalDateTime lockedAt;
     private UUID lockedByUserId;
 
+    private SeatType seatType;
     private BigDecimal price;
 }

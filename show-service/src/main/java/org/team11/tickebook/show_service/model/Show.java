@@ -22,7 +22,7 @@ public class Show {
     private UUID id;
 
     private UUID movieId;   // from movie service
-    private UUID screenId;  // from theatre service
+    private Long screenId;  // from theatre service
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;

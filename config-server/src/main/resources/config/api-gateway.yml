@@ -18,6 +18,18 @@ spring:
               uri: lb://MOVIE-SERVICE
               predicates:
                 - Path=/api/movies/**
+            - id: consumer-service
+              uri: lb://CONSUMER-SERVICE
+              predicates:
+                - Path=/api/bookings/**,/api/booking-seats/**,/api/tickets**
+            - id: show-service
+              uri: lb://SHOW-SERVICE
+              predicates:
+                - Path=/api/shows/**
+            - id: theatre-service
+              uri: lb://THEATRE-SERVICE
+              predicates:
+                - Path=/api/bookings/**,/api/screens/**,/api/seats/**,/api/theatres/**
 eureka:
   client:
     serviceUrl:
