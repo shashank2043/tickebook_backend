@@ -59,5 +59,6 @@
     <module>consumer-service</module>
     <module>movie-service</module>
     <module>api-gateway</module>
+    <module>config-server</module>
 </modules>
 </project>
