@@ -1,24 +1,20 @@
-package org.team11.tickebook.theatreservice.model;
+package org.team11.tickebook.show_service.dto;
 
-import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.team11.tickebook.show_service.model.SeatType;
 
-@Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Seat {
-    @Id
+@AllArgsConstructor
+public class SeatDto {
     private Long id;
     private String rowLabel;
     private int seatNumber;
-    @Enumerated(EnumType.STRING)
     private SeatType seatType;
     private int positionX;
     private int positionY;
     private boolean isActive;
-    @ManyToOne
-    private Screen screen;
 }

@@ -4,6 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.team11.tickebook.theatreservice.model.Screen;
 
+import java.util.List;
+import java.util.UUID;
+
 @Repository
 public interface ScreenRepository extends JpaRepository<Screen,Long> {
+    List<Screen> findByTheatreId(UUID theatreId);
 }
