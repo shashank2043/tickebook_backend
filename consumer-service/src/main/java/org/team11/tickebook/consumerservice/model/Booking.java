@@ -18,6 +18,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private UUID userId;
+    @Column(name = "show_id")
     private UUID show;
     private  String bookingNumber;
     @Enumerated(EnumType.STRING)

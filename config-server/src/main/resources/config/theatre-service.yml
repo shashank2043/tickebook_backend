@@ -1,0 +1,22 @@
+spring:
+    application:
+        name: theatre-service
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        password: Shashank@123
+        url: jdbc:mysql://localhost:3306/theatre_db?createDatabaseIfNotExist=true
+        username: shashank
+    jpa:
+        hibernate:
+            ddl-auto: create
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+                format_sql: true
+        show-sql: true
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka/
+server:
+    port: 0
