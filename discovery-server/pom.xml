@@ -8,9 +8,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>org.team11.tickebook</groupId>
-	<artifactId>discoveryserver</artifactId>
+	<artifactId>discovery-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>discoveryserver</name>
+	<name>discovery-server</name>
 	<description>Discivery server</description>
 	<url/>
 	<licenses>
