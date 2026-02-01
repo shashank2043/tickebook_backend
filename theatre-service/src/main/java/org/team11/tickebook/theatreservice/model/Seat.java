@@ -18,7 +18,6 @@ public class Seat {
     private SeatType seatType;
     private int positionX;
     private int positionY;
-    private boolean isAvailable;
     private boolean isActive;
     @ManyToOne
     private Screen screen;

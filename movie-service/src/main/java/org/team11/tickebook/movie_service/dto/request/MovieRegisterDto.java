@@ -1,24 +1,14 @@
-package org.team11.tickebook.movie_service.model;
+package org.team11.tickebook.movie_service.dto.request;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.UUID;
-
-@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class Movie {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class MovieRegisterDto {
     private String title;
     private String language;
     private Integer durationInMinutes;
@@ -28,6 +18,4 @@ public class Movie {
     private String description;
     private String posterUrl;
     private Boolean isActive;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

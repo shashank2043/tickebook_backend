@@ -1,0 +1,17 @@
+package org.team11.tickebook.show_service.service;
+
+import org.team11.tickebook.show_service.model.Show;
+import org.team11.tickebook.show_service.model.ShowSeat;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+public interface ShowService {
+    Show createShow(UUID movieId, UUID screenId, LocalDateTime start, LocalDateTime end);
+    List<ShowSeat> getSeats(UUID showId);
+    Show updateShow(UUID showId,
+                    LocalDateTime start, LocalDateTime end);
+
+    void deleteShow(UUID showId);
+}

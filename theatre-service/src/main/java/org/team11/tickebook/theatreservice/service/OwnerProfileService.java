@@ -2,12 +2,13 @@ package org.team11.tickebook.theatreservice.service;
 
 import jakarta.validation.Valid;
 import org.team11.tickebook.theatreservice.dto.request.TheatreApprovalRequestDto;
-import org.team11.tickebook.theatreservice.dto.request.TheatreOwnerProfileRequest;
 import org.team11.tickebook.theatreservice.dto.response.TheatreApprovalResponseDto;
-import org.team11.tickebook.theatreservice.dto.response.TheatreOwnerProfileResponse;
+import org.team11.tickebook.theatreservice.model.TheatreOwnerProfile;
 
-public interface TheatreOwnerProfileService {
-    public TheatreOwnerProfileResponse registerTheatreOwnerProfile(TheatreOwnerProfileRequest request);
+import java.util.UUID;
 
+public interface OwnerProfileService {
+    TheatreOwnerProfile create(TheatreOwnerProfile profile);
+    TheatreOwnerProfile get(UUID id);
     TheatreApprovalResponseDto requestTheatreApproval(@Valid TheatreApprovalRequestDto request);
 }
