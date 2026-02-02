@@ -61,5 +61,6 @@
     <module>api-gateway</module>
     <module>config-server</module>
     <module>show-service</module>
+    <module>auth-service</module>
 </modules>
 </project>
