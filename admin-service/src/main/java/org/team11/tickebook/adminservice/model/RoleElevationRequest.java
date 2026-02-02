@@ -20,13 +20,11 @@ public class RoleElevationRequest {
     @Enumerated(EnumType.STRING)
     private Role requestedRole;
     private Role currentRole;
+    private String description;
     @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
-
-    @OneToOne
-    private AdminProfile reviewedBy;
+    private UUID reviewedBy;
     private LocalDateTime reviewedAt;
     private String remarks;
     private LocalDateTime createdAt;
-
 }

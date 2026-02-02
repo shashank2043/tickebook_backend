@@ -14,4 +14,6 @@ import java.util.UUID;
 public class RoleApprovalRequestDto {
     private UUID requestedBy;
     private Role requestedRole;
+    private Role currentRole;
+    private String description;
 }

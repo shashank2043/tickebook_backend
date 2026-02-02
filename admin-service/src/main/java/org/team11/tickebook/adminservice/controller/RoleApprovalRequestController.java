@@ -33,10 +33,11 @@ public class RoleApprovalRequestController {
     public ResponseEntity<RoleApprovalResponseDto> reviewRequest(
             @PathVariable UUID id,
             @RequestParam ApprovalStatus status,
-            @RequestParam(required = false) String remarks
+            @RequestParam(required = false) String remarks,
+            @RequestParam UUID reviewed
     ) {
         return ResponseEntity.ok(
-                roleApprovalRequestService.reviewRequest(id, status, remarks)
+                roleApprovalRequestService.reviewRequest(id, status, remarks,reviewed)
         );
     }
 
