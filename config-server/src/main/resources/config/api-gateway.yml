@@ -10,10 +10,6 @@ spring:
               enabled: true
               lower-case-service-id: true
           routes:
-            - id: theatre-service
-              uri: lb://THEATRE-SERVICE
-              predicates:
-                - Path=/api/theatre/**
             - id: movie-service
               uri: lb://MOVIE-SERVICE
               predicates:
@@ -30,6 +26,10 @@ spring:
               uri: lb://THEATRE-SERVICE
               predicates:
                 - Path=/api/bookings/**,/api/screens/**,/api/seats/**,/api/theatres/**
+            - id: admmin-service
+              uri: lb://ADMIN-SERVICE
+              predicates:
+                - Path=/api/theatre-approval-requests/**
 eureka:
   client:
     serviceUrl:
