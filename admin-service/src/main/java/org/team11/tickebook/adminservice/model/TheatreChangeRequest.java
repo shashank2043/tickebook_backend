@@ -23,7 +23,6 @@ public class TheatreChangeRequest {
     private String newValue;
     @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
-
     private UUID requestedBy;
 
     @ManyToOne

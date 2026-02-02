@@ -26,7 +26,7 @@ spring:
               uri: lb://THEATRE-SERVICE
               predicates:
                 - Path=/api/bookings/**,/api/screens/**,/api/seats/**,/api/theatres/**
-            - id: admmin-service
+            - id: admin-service
               uri: lb://ADMIN-SERVICE
               predicates:
                 - Path=/api/theatre-approval-requests/**

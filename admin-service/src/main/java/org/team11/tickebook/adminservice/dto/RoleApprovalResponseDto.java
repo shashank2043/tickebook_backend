@@ -1,30 +1,30 @@
-package org.team11.tickebook.adminservice.model;
+package org.team11.tickebook.adminservice.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.team11.tickebook.adminservice.model.ApprovalStatus;
+import org.team11.tickebook.adminservice.model.Role;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@AllArgsConstructor
+
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-@Entity
-public class RoleElevationRequest {
-    @Id
-    @GeneratedValue
+public class RoleApprovalResponseDto {
     private UUID id;
+
     private UUID requestedBy;
-    @Enumerated(EnumType.STRING)
-    private Role requestedRole;
     private Role currentRole;
-    private String description;
-    @Enumerated(EnumType.STRING)
+    private Role requestedRole;
+
     private ApprovalStatus status;
-    private UUID reviewedBy;
+
+    private UUID reviewedByAdminId;
     private LocalDateTime reviewedAt;
+
     private String remarks;
     private LocalDateTime createdAt;
 }

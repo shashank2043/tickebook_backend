@@ -25,6 +25,7 @@ public class TheatreApprovalRequest {
     @OneToOne
     @JoinColumn(name="admin_id")
     private AdminProfile reviewedBy;
+
     private LocalDateTime reviewedAt;
     private String remarks;
     private LocalDateTime createdAt;
