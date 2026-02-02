@@ -14,22 +14,50 @@ spring:
               uri: lb://MOVIE-SERVICE
               predicates:
                 - Path=/api/movies/**
+              filters:
+                - AuthenticationFilter
             - id: consumer-service
               uri: lb://CONSUMER-SERVICE
               predicates:
                 - Path=/api/bookings/**,/api/booking-seats/**,/api/tickets**
+              filters:
+                - AuthenticationFilter
             - id: show-service
               uri: lb://SHOW-SERVICE
               predicates:
                 - Path=/api/shows/**
+              filters:
+                - AuthenticationFilter
             - id: theatre-service
               uri: lb://THEATRE-SERVICE
               predicates:
                 - Path=/api/bookings/**,/api/screens/**,/api/seats/**,/api/theatres/**
+              filters:
+                - AuthenticationFilter
             - id: admin-service
               uri: lb://ADMIN-SERVICE
               predicates:
                 - Path=/api/theatre-approval-requests/**
+              filters:
+                - AuthenticationFilter
+                  # --- NEW: Auth Service Mapping ---
+
+                  # 1. PUBLIC ENDPOINTS (Login, Register)
+                  # We DO NOT add AuthenticationFilter here, otherwise login will fail
+                  # because the user doesn't have a cookie yet.
+            - id: auth-service-public
+              uri: lb://AUTH-SERVICE
+              predicates:
+                - Path=/auth/**
+
+                  # 2. PROTECTED ENDPOINTS (User Profile)
+                  # We route /user/** to the same service, but we ADD the security filter.
+            - id: auth-service-protected
+              uri: lb://AUTH-SERVICE
+              predicates:
+                - Path=/user/**
+              filters:
+                - AuthenticationFilter
 eureka:
   client:
     serviceUrl:
