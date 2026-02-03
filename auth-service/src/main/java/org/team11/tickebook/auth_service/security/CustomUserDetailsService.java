@@ -16,12 +16,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email "+email));
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword()) // BCrypt
-                .roles(user.getRole().name())
                 .roles(user.getRole().name())
                 .accountLocked(user.isAccountLocked())
                 .disabled(!user.isActive())
