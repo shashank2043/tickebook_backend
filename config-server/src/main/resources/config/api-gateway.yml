@@ -40,18 +40,10 @@ spring:
                 - Path=/api/theatre-approval-requests/**
               filters:
                 - AuthenticationFilter
-                  # --- NEW: Auth Service Mapping ---
-
-                  # 1. PUBLIC ENDPOINTS (Login, Register)
-                  # We DO NOT add AuthenticationFilter here, otherwise login will fail
-                  # because the user doesn't have a cookie yet.
             - id: auth-service-public
               uri: lb://AUTH-SERVICE
               predicates:
                 - Path=/auth/**
-
-                  # 2. PROTECTED ENDPOINTS (User Profile)
-                  # We route /user/** to the same service, but we ADD the security filter.
             - id: auth-service-protected
               uri: lb://AUTH-SERVICE
               predicates:

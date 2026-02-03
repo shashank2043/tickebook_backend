@@ -3,6 +3,7 @@ package org.team11.tickebook.adminservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.team11.tickebook.adminservice.dto.TheatreApprovalRequestDto;
 import org.team11.tickebook.adminservice.dto.TheatreApprovalResponseDto;
@@ -17,6 +18,7 @@ public class TheatreApprovalRequestController {
     private TheatreApprovalRequestService service;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TheatreApprovalResponseDto> createRequest(
             @RequestBody TheatreApprovalRequestDto requestDto
     ) {
