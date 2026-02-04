@@ -18,7 +18,7 @@ public class TheatreApprovalRequestController {
     private TheatreApprovalRequestService service;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('THEATEROWNER')")
     public ResponseEntity<TheatreApprovalResponseDto> createRequest(
             @RequestBody TheatreApprovalRequestDto requestDto
     ) {
@@ -26,6 +26,7 @@ public class TheatreApprovalRequestController {
     }
 
     @PutMapping("/{id}/review")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<TheatreApprovalResponseDto> reviewRequest(
             @PathVariable UUID id,
             @RequestBody TheatreApprovalRequestDto requestDto
