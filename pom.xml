@@ -53,6 +53,7 @@
         </dependencies>
     </dependencyManagement>
 <modules>
+    <module>mail-server</module>
     <module>discovery-server</module>
     <module>admin-service</module>
     <module>theatre-service</module>
