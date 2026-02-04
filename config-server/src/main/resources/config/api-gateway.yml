@@ -37,7 +37,7 @@ spring:
             - id: admin-service
               uri: lb://ADMIN-SERVICE
               predicates:
-                - Path=/api/theatre-approval-requests/**
+                - Path=/api/theatre-approval-requests/**,/api/role-approval-requests/**
               filters:
                 - AuthenticationFilter
             - id: auth-service-public

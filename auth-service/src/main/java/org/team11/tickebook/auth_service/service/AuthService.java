@@ -13,6 +13,7 @@ import org.team11.tickebook.auth_service.security.CustomUserDetailsService;
 import org.team11.tickebook.auth_service.security.JwtUtil;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class AuthService {
@@ -38,7 +39,7 @@ public class AuthService {
         user.setLastName(request.getLastName());
 
         // DEFAULT SYSTEM VALUES
-        user.setRole(Role.USER);
+        user.setRoles(List.of(Role.USER));
         user.setEmailVerified(false);
         user.setAccountLocked(false);
         user.setFailedLoginAttempts(0);

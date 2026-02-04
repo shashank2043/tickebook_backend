@@ -18,7 +18,7 @@ public class TheatreApprovalRequestController {
     private TheatreApprovalRequestService service;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<TheatreApprovalResponseDto> createRequest(
             @RequestBody TheatreApprovalRequestDto requestDto
     ) {

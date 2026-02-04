@@ -1,7 +1,7 @@
 package org.team11.tickebook.adminservice.model;
 
 public enum Role {
-    THEATEROWNER,
+    THEATREOWNER,
     ADMIN,
-    CONSUMER
+    USER
 }
