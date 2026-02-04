@@ -64,7 +64,7 @@ public class TheatreApprovalRequestServiceImpl implements TheatreApprovalRequest
         return mapToResponse(request);
     }
 
-    // ----------------- MAPPER -----------------
+    //----------------- MAPPER -----------------
 
     private TheatreApprovalResponseDto mapToResponse(TheatreApprovalRequest entity) {
 
