@@ -70,7 +70,7 @@ public class AuthController {
                         result.getUser().getEmail(),
                         result.getUser().getFirstName(),
                         result.getUser().getLastName(),
-                        result.getUser().getRole().name(),
+                        result.getUser().getRoles().toString(),
                         result.getUser().isEmailVerified()
                 );
         return ResponseEntity.ok()

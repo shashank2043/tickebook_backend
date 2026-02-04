@@ -18,10 +18,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RoleApprovalRequestController {
 
-    private RoleApprovalRequestService roleApprovalRequestService;
+    private final RoleApprovalRequestService roleApprovalRequestService;
 
     // Create role change request
     @PostMapping
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<RoleApprovalResponseDto> createRequest(
             @RequestBody RoleApprovalRequestDto requestDto
     ) {
