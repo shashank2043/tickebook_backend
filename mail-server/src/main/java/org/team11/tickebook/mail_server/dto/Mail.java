@@ -1,6 +1,8 @@
 package org.team11.tickebook.mail_server.dto;
 
-public class Mail {
+import java.io.Serializable;
+
+public class Mail implements Serializable {
     String tomail;
     String sub;
     String content;
