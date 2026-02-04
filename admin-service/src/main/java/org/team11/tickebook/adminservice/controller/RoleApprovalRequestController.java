@@ -22,7 +22,6 @@ public class RoleApprovalRequestController {
 
     // Create role change request
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoleApprovalResponseDto> createRequest(
             @RequestBody RoleApprovalRequestDto requestDto
     ) {
@@ -32,7 +31,6 @@ public class RoleApprovalRequestController {
     }
 
     @PutMapping("/{id}/review")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> reviewRequest(
             @PathVariable UUID id,
             @RequestParam ApprovalStatus status,

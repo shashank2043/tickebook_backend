@@ -3,6 +3,7 @@ package org.team11.tickebook.auth_service.controller;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.team11.tickebook.auth_service.service.UserService;
+import org.team11.tickebook.auth_service.service.impl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 	@Autowired
+	@Qualifier("userServiceImpl")
 	private UserService service;
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getUser(@PathVariable UUID id){
