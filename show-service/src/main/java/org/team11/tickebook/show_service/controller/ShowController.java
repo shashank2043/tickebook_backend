@@ -43,7 +43,10 @@ public class ShowController {
 
         return ResponseEntity.ok(showService.getSeats(showId));
     }
-
+    @GetMapping
+    public ResponseEntity<List<Show>> getAllShows(){
+        return ResponseEntity.ok(showService.getAllShows());
+    }
     // UPDATE SHOW
     @PutMapping("/{showId}")
     public ResponseEntity<Show> updateShow(

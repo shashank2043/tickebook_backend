@@ -17,4 +17,6 @@ public interface ShowService {
                     LocalDateTime start, LocalDateTime end);
 
     void deleteShow(UUID showId);
+
+    List<Show> getAllShows();
 }

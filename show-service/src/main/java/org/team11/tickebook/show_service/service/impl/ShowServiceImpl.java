@@ -79,4 +79,9 @@ public class ShowServiceImpl implements ShowService {
         showRepository.save(show);
     }
 
+    @Override
+    public List<Show> getAllShows() {
+        return showRepository.findAll();
+    }
+
 }

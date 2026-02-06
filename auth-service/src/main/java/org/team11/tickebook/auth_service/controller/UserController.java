@@ -27,7 +27,7 @@ public class UserController {
 		String email = authentication.getName(); // comes from JWT
 		System.out.println(email);
 		service.generateOtp(email);
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body("Otp sent to the email address: "+email);
 	}
 
 	@PostMapping("/verify-otp")
