@@ -40,6 +40,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             for (Cookie cookie : request.getCookies()) {
                 if ("accessToken".equals(cookie.getName())) {
                     token = cookie.getValue();
+                    break;
                 }
             }
         }
@@ -72,13 +73,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             } catch (Exception ex) {
                 // 🔥 Token is invalid / user deleted / DB reset
 
-                SecurityContextHolder.clearContext();
-
-                // 🔥 Tell browser to delete cookie
-                response.addHeader(
-                        "Set-Cookie",
-                        "accessToken=; Max-Age=0; Path=/; HttpOnly"
-                );
+//                SecurityContextHolder.clearContext();
+//
+//                // 🔥 Tell browser to delete cookie
+//                response.addHeader(
+//                        "Set-Cookie",
+//                        "accessToken=; Max-Age=0; Path=/; HttpOnly"
+//                );
+                throw new RuntimeException(ex);
             }
         }
 

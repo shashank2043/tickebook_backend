@@ -17,4 +17,7 @@ public interface UserService {
 
     public boolean deleteUser(UUID id);
 
+    public Boolean generateOtp(String email);
+
+    public Boolean validateOtp(String email,String otp);
 }

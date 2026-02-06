@@ -17,13 +17,7 @@ public class TheatreApprovalRequestController {
 	@Autowired
     private TheatreApprovalRequestService service;
 
-    @PostMapping
-    @PreAuthorize("hasRole('THEATREOWNER')")
-    public ResponseEntity<TheatreApprovalResponseDto> createRequest(
-            @RequestBody TheatreApprovalRequestDto requestDto
-    ) {
-        return ResponseEntity.ok(service.createRequest(requestDto));
-    }
+
 
     @PutMapping("/{id}/review")
     @PreAuthorize("hasRole('ADMIN')")

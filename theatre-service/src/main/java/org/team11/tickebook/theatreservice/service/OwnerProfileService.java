@@ -10,5 +10,6 @@ import java.util.UUID;
 public interface OwnerProfileService {
     TheatreOwnerProfile create(TheatreOwnerProfile profile);
     TheatreOwnerProfile get(UUID id);
+    TheatreOwnerProfile update(TheatreOwnerProfile profile);
     TheatreApprovalResponseDto requestTheatreApproval(@Valid TheatreApprovalRequestDto request);
 }
