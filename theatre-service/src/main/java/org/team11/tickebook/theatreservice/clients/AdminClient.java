@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.team11.tickebook.theatreservice.dto.request.TheatreApprovalRequestDto;
 import org.team11.tickebook.theatreservice.dto.response.TheatreApprovalResponseDto;
 
-@FeignClient("ADMIN-SERVICE")
+@FeignClient(name = "ADMIN-SERVICE",configuration = FeignConfig.class)
 public interface AdminClient {
-    @PostMapping("/api/theatre-approval-requests")
+    @PostMapping("/internal/approval-request")
     public ResponseEntity<TheatreApprovalResponseDto> createRequest(
             @RequestBody TheatreApprovalRequestDto requestDto
     );

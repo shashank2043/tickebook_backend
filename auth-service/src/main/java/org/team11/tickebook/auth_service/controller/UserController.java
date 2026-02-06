@@ -6,15 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import org.team11.tickebook.auth_service.dto.OtpRequest;
 import org.team11.tickebook.auth_service.service.UserService;
 import org.team11.tickebook.auth_service.service.impl.UserServiceImpl;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 	@Autowired
 	@Qualifier("userServiceImpl")
@@ -23,5 +22,20 @@ public class UserController {
 	public ResponseEntity<?> getUser(@PathVariable UUID id){
 		return ResponseEntity.status(HttpStatus.OK).body(service.getUser(id));
 	}
+	@PostMapping("/verify")
+	public ResponseEntity<?> generateOtp(Authentication authentication) {
+		String email = authentication.getName(); // comes from JWT
+		System.out.println(email);
+		service.generateOtp(email);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
 
+	@PostMapping("/verify-otp")
+	public ResponseEntity<?> verifyOtp(
+			Authentication authentication,
+			@RequestBody OtpRequest req) {
+		String email = authentication.getName();
+		service.validateOtp(email, req.getOtp());
+		return ResponseEntity.ok("Otp verified");
+	}
 }

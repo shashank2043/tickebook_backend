@@ -17,3 +17,5 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+jwt:
+  secret: tickebook_auth_jwt_super_secure_secret_2026_value

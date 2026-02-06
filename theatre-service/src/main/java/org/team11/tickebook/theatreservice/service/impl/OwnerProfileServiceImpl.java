@@ -35,8 +35,26 @@ public class OwnerProfileServiceImpl implements OwnerProfileService {
     }
 
     @Override
+    public TheatreOwnerProfile update(TheatreOwnerProfile profile) {
+        if(profileRepository.existsById(profile.getId())){
+            return profileRepository.save(profile);
+        }
+        else throw new OwnerProfileNotFoundException("Owner Profile not found");
+    }
+
+    @Override
     @Transactional
     public TheatreApprovalResponseDto requestTheatreApproval(TheatreApprovalRequestDto request) {
+        TheatreOwnerProfile theatreOwnerProfile = profileRepository.findById(request.getTheatreOwnerProfileId()).orElseThrow(() -> new OwnerProfileNotFoundException("Owner profile not found with id " + request.getTheatreOwnerProfileId()));
+        boolean theatreExists = theatreOwnerProfile.getTheatres()
+                .stream()
+                .anyMatch(t -> t.getId().equals(request.getTheatreId()));
+        if (!theatreExists) {
+            throw new IllegalArgumentException(
+                    "Theatre " + request.getTheatreId() +
+                            " does not belong to owner " + request.getTheatreOwnerProfileId()
+            );
+        }
         return adminClient.createRequest(request).getBody();
     }
 }

@@ -4,17 +4,24 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
-
-    private static final String SECRET_KEY = "very_secret_key_which_should_be_long";
-
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
+    private Key key;
+    @PostConstruct
+    public void init() {
+        key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    }
     public String generateToken(UserDetails userDetails) {
         CustomUserDetails custom = (CustomUserDetails) userDetails;
         return Jwts.builder()
@@ -26,7 +33,7 @@ public class JwtUtil {
                                 .toList())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hr
-                .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -35,15 +42,20 @@ public class JwtUtil {
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        return extractUsername(token).equals(userDetails.getUsername()) &&
-                !extractClaims(token).getExpiration().before(new Date());
+        Claims claims = extractClaims(token);
+        return claims.getSubject().equals(userDetails.getUsername())
+                && claims.getExpiration().after(new Date());
     }
 
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY.getBytes())
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+    public String extraxtUserId(String token){
+        Claims claims = extractClaims(token);
+        return claims.get("userId",String.class);
     }
 }

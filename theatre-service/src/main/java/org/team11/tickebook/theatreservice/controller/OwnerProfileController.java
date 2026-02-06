@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.team11.tickebook.theatreservice.dto.request.TheatreApprovalRequestDto;
+import org.team11.tickebook.theatreservice.dto.response.TheatreApprovalResponseDto;
 import org.team11.tickebook.theatreservice.model.TheatreOwnerProfile;
 import org.team11.tickebook.theatreservice.service.OwnerProfileService;
 
@@ -28,5 +29,10 @@ public class OwnerProfileController {
     @GetMapping("/{id}")
     public TheatreOwnerProfile get(@PathVariable UUID id) {
         return service.get(id);
+    }
+
+    @PostMapping("/approval-request")
+    public TheatreApprovalResponseDto approvalRequest(@RequestBody TheatreApprovalRequestDto dto){
+        return service.requestTheatreApproval(dto);
     }
 }

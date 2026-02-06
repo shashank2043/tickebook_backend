@@ -51,7 +51,7 @@ public class AuthController {
                 .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body("Login successful");
+                .body("Login successful" + "\nUser Id: "+jwtUtil.extraxtUserId(token));
     }
     @PostMapping("/register")
     public ResponseEntity<RegistrationResponse> register(

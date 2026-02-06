@@ -32,6 +32,7 @@ public class RoleApprovalRequestController {
     }
 
     @PutMapping("/{id}/review")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> reviewRequest(
             @PathVariable UUID id,
             @RequestParam ApprovalStatus status,
