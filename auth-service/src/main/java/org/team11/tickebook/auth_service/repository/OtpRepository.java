@@ -1,7 +1,7 @@
 package org.team11.tickebook.auth_service.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.team11.tickebook.auth_service.model.Otp;
+import org.team11.tickebook.auth_service.model.entity.Otp;
 
 import java.util.Optional;
 

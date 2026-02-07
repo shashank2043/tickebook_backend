@@ -1,46 +1,23 @@
-package org.team11.tickebook.auth_service.model;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+package org.team11.tickebook.adminservice.security;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.team11.tickebook.adminservice.model.Role;
 
-@Entity
-@Table(name = "user")
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-	//	User
-//	id : UUID
-//	email : String
-//	password : String
-//	tokenVersion : int
-//	role : Role
-//	firstName : String
-//	lastName : String
-//	phoneNumber : String
-//	emailVerified : boolean
-//	accountLocked : boolean
-//	failedLoginAttempts : int
-//	isActive : boolean
-//	isDeleted : boolean
-//	lastLoginAt : LocalDateTime
-//	passwordChangedAt : LocalDateTime
-//	createdAt : LocalDateTime
-//	updatedAt : LocalDateTime
-	@Id
-	@GeneratedValue
 	private UUID id;
 	private String email;
 	private String password;
 	private int tokenVersion;
-	@ElementCollection(targetClass = Role.class)
-	@Enumerated(EnumType.STRING)
 	private List<Role> roles;
 	private String firstName;
 	private String lastName;

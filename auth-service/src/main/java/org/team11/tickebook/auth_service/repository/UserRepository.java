@@ -4,8 +4,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.team11.tickebook.auth_service.model.Role;
-import org.team11.tickebook.auth_service.model.User;
+import org.team11.tickebook.auth_service.model.enums.Role;
+import org.team11.tickebook.auth_service.model.entity.User;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
     boolean existsByEmail(String email);

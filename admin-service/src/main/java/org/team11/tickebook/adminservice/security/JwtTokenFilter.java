@@ -73,19 +73,19 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 String username = claims.getSubject();
                 List<String> roles = claims.get("roles", List.class);
                 if(roles == null) roles=List.of();
-                System.out.println(roles.toString());
+//                System.out.println(roles.toString());
                 // 4. Convert Roles → Authorities
                 List<SimpleGrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)
                         .toList();
 
                 // 5. Create Principal
-                User principal = new User(username, "", authorities);
+//                User principal = new User(username, "", authorities);
 
                 // 6. Set Authentication
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
-                                principal,
+                                claims,
                                 null,
                                 authorities
                         );

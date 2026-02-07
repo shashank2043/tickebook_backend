@@ -4,17 +4,18 @@ package org.team11.tickebook.adminservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.team11.tickebook.adminservice.client.AuthClient;
 import org.team11.tickebook.adminservice.dto.RoleApprovalRequestDto;
 import org.team11.tickebook.adminservice.dto.RoleApprovalResponseDto;
-import org.team11.tickebook.adminservice.model.AdminProfile;
 import org.team11.tickebook.adminservice.model.ApprovalStatus;
-import org.team11.tickebook.adminservice.model.Role;
 import org.team11.tickebook.adminservice.model.RoleElevationRequest;
 import org.team11.tickebook.adminservice.repository.AdminProfileRepository;
 import org.team11.tickebook.adminservice.repository.RoleElevationRequestRepository;
 import org.team11.tickebook.adminservice.service.RoleApprovalRequestService;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,10 +27,11 @@ public class RoleApprovalRequestServiceImpl
     @Autowired
     private RoleElevationRequestRepository repository;
     @Autowired
-    private  AdminProfileRepository adminProfileRepository;
-
+    private AdminProfileRepository adminProfileRepository;
+    @Autowired
+    private AuthClient authClient;
     @Override
-    public RoleApprovalResponseDto createRequest(RoleApprovalRequestDto dto) {
+    public Boolean createRequest(RoleApprovalRequestDto dto) {
         RoleElevationRequest request = new RoleElevationRequest();
         request.setRequestedBy(dto.getRequestedBy());
         request.setCurrentRole(dto.getCurrentRole());
@@ -37,10 +39,18 @@ public class RoleApprovalRequestServiceImpl
         request.setDescription(dto.getDescription());
         request.setStatus(ApprovalStatus.PENDING);
         request.setCreatedAt(LocalDateTime.now());
-        return mapToResponse(repository.save(request));
+        repository.save(request);
+        return true;
     }
 
     @Override
+    public List<RoleApprovalResponseDto> checkStatus(UUID requestedBy) {
+        List<RoleElevationRequest> byRequestedBy = repository.findByRequestedBy(requestedBy);
+        return byRequestedBy.stream().map(this::mapToResponse).toList();
+    }
+
+    @Override
+    @Transactional
     public RoleApprovalResponseDto reviewRequest(UUID id,
                                                  ApprovalStatus status,
                                                  String remarks, UUID reviewer) {
@@ -54,7 +64,12 @@ public class RoleApprovalRequestServiceImpl
         request.setReviewedBy(reviewer);
 
         // If approved → update admin role
-
+        if (status == ApprovalStatus.APPROVED) {
+            authClient.updateUserRole(
+                    request.getRequestedBy(),
+                    request.getRequestedRole()
+            );
+        }
 
         return mapToResponse(repository.save(request));
     }
@@ -87,4 +102,4 @@ public class RoleApprovalRequestServiceImpl
 
         return dto;
     }
-    }
+}

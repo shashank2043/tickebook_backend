@@ -1,18 +1,25 @@
 package org.team11.tickebook.adminservice.service.impl;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.team11.tickebook.adminservice.client.TheatreClient;
 import org.team11.tickebook.adminservice.dto.TheatreApprovalRequestDto;
 import org.team11.tickebook.adminservice.dto.TheatreApprovalResponseDto;
+import org.team11.tickebook.adminservice.dto.TheatreApprovalReviewDto;
 import org.team11.tickebook.adminservice.model.AdminProfile;
 import org.team11.tickebook.adminservice.model.ApprovalStatus;
 import org.team11.tickebook.adminservice.model.TheatreApprovalRequest;
 import org.team11.tickebook.adminservice.repository.AdminProfileRepository;
 import org.team11.tickebook.adminservice.repository.TheatreApprovalRequestRepository;
+import org.team11.tickebook.adminservice.security.SecurityUtil;
 import org.team11.tickebook.adminservice.service.TheatreApprovalRequestService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,9 +29,12 @@ public class TheatreApprovalRequestServiceImpl implements TheatreApprovalRequest
     private TheatreApprovalRequestRepository repository;
     @Autowired
     private AdminProfileRepository adminProfileRepository; // if needed
-
+    @Autowired
+    private TheatreClient theatreClient;
+    @Autowired
+    private SecurityUtil securityUtil;
     @Override
-    public TheatreApprovalResponseDto createRequest(TheatreApprovalRequestDto dto) {
+    public Boolean createRequest(TheatreApprovalRequestDto dto) {
 
         TheatreApprovalRequest request = new TheatreApprovalRequest();
         request.setTheaterId(dto.getTheatreId());
@@ -33,12 +43,15 @@ public class TheatreApprovalRequestServiceImpl implements TheatreApprovalRequest
         request.setCreatedAt(LocalDateTime.now());
 
         TheatreApprovalRequest saved = repository.save(request);
-        return mapToResponse(saved);
+        return true;
     }
 
     @Override
-    public TheatreApprovalResponseDto reviewRequest(UUID id,
-                                                    TheatreApprovalRequestDto dto) {
+    @Transactional
+    public TheatreApprovalResponseDto reviewRequest(
+            UUID id,
+            TheatreApprovalReviewDto dto,
+            Authentication authentication) {
 
         TheatreApprovalRequest request = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Approval request not found"));
@@ -46,14 +59,29 @@ public class TheatreApprovalRequestServiceImpl implements TheatreApprovalRequest
         request.setStatus(dto.getStatus());
         request.setRemarks(dto.getRemarks());
         request.setReviewedAt(LocalDateTime.now());
+        // Read user id
+        Claims claims = (Claims) authentication.getPrincipal();
+        UUID userId = UUID.fromString(claims.get("userId", String.class));
+        //find admin id
+//        System.out.println(userId);
+        AdminProfile admin = adminProfileRepository
+                .findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Admin profile not found"));
 
-        // Example: set admin who reviewed (mocked)
-        AdminProfile admin = getCurrentAdmin();
         request.setReviewedBy(admin);
+
+        // ---- CROSS SERVICE ACTION ----
+        if (dto.getStatus() == ApprovalStatus.APPROVED) {
+
+            theatreClient.verifyOwner(
+                    request.getTheaterOwnerProfileId()
+            );
+        }
 
         TheatreApprovalRequest updated = repository.save(request);
         return mapToResponse(updated);
     }
+
 
     @Override
     public TheatreApprovalResponseDto getById(UUID id) {
@@ -62,6 +90,18 @@ public class TheatreApprovalRequestServiceImpl implements TheatreApprovalRequest
                 .orElseThrow(() -> new RuntimeException("Approval request not found"));
 
         return mapToResponse(request);
+    }
+
+    @Override
+    public List<TheatreApprovalResponseDto> checkStatus(UUID id) {
+        List<TheatreApprovalRequest> request = repository.findByTheaterId(id);
+        return request.stream().map(this::mapToResponse).toList();
+    }
+
+    @Override
+    public List<TheatreApprovalResponseDto> getAll() {
+        List<TheatreApprovalRequest> approvalRequests = repository.findAll();
+        return approvalRequests.stream().map(this::mapToResponse).toList();
     }
 
     //----------------- MAPPER -----------------
