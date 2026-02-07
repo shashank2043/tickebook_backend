@@ -52,6 +52,7 @@ spring:
                 - AuthenticationFilter
 eureka:
   client:
+    registry-fetch-interval-seconds: 5
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 jwt:

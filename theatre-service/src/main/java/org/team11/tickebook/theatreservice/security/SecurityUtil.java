@@ -1,4 +1,4 @@
-package org.team11.tickebook.adminservice.security;
+package org.team11.tickebook.theatreservice.security;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.Authentication;
@@ -11,9 +11,5 @@ public class SecurityUtil {
     public UUID getUserId(Authentication auth) {
         Claims claims = (Claims) auth.getPrincipal();
         return UUID.fromString(claims.get("userId").toString());
-    }
-    public String getEmailId(Authentication authentication){
-        Claims claims = (Claims) authentication.getPrincipal();
-        return claims.getSubject();
     }
 }

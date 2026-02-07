@@ -12,6 +12,7 @@ import org.team11.tickebook.adminservice.dto.TheatreApprovalResponseDto;
 import org.team11.tickebook.adminservice.service.RoleApprovalRequestService;
 import org.team11.tickebook.adminservice.service.TheatreApprovalRequestService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,13 +23,16 @@ public class InternalController {
     @Autowired
     private RoleApprovalRequestService roleApprovalRequestService;
 
-    @PostMapping("/approval-request")
-    public ResponseEntity<TheatreApprovalResponseDto> createRequest(
+    @PostMapping("/theatre-approval")
+    public ResponseEntity<Boolean> createRequest(
             @RequestBody TheatreApprovalRequestDto requestDto
     ) {
         return ResponseEntity.ok(service.createRequest(requestDto));
     }
-
+    @GetMapping("/theatre-approval")
+    public ResponseEntity<List<TheatreApprovalResponseDto>> checkStatus(@RequestParam UUID theatreId){
+        return ResponseEntity.ok(service.checkStatus(theatreId));
+    }
     @PostMapping("/role-elevation")
     public ResponseEntity<?> createRequest(
             @RequestBody RoleApprovalRequestDto requestDto

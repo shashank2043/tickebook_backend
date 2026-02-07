@@ -48,6 +48,7 @@ public class RoleApprovalRequestController {
 
     // Get request by ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoleApprovalResponseDto> getById(
             @PathVariable UUID id
     ) {

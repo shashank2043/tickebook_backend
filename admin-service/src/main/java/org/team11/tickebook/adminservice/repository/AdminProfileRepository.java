@@ -10,5 +10,7 @@ import java.util.UUID;
 @Repository
 public interface AdminProfileRepository extends JpaRepository<AdminProfile, UUID> {
     Optional<AdminProfile> findFirstByCanApproveRolesTrue();
+
+    Optional<AdminProfile> findByUserId(UUID userId);
 }
 
