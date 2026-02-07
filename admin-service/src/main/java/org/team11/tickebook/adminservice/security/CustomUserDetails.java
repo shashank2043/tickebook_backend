@@ -1,11 +1,10 @@
-package org.team11.tickebook.auth_service.security;
+package org.team11.tickebook.adminservice.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.team11.tickebook.auth_service.model.entity.User;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -21,7 +20,7 @@ public class CustomUserDetails implements UserDetails {
     private boolean accountLocked;
     private boolean active;
 
-    public CustomUserDetails(User user,Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(User user, Collection<? extends GrantedAuthority> authorities) {
 
         this.id = user.getId();
         this.email = user.getEmail();

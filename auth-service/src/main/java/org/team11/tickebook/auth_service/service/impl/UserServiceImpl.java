@@ -13,8 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.team11.tickebook.auth_service.client.EmailClient;
 import org.team11.tickebook.auth_service.client.Mail;
 import org.team11.tickebook.auth_service.exception.UserNotFoundException;
-import org.team11.tickebook.auth_service.model.Otp;
-import org.team11.tickebook.auth_service.model.User;
+import org.team11.tickebook.auth_service.kafka.MailProducer;
+import org.team11.tickebook.auth_service.model.entity.Otp;
+import org.team11.tickebook.auth_service.model.entity.User;
+import org.team11.tickebook.auth_service.model.enums.Role;
 import org.team11.tickebook.auth_service.repository.OtpRepository;
 import org.team11.tickebook.auth_service.repository.UserRepository;
 import org.team11.tickebook.auth_service.service.UserService;
@@ -27,6 +29,8 @@ public class UserServiceImpl implements UserService {
     private EmailClient emailClient;
     @Autowired
     private OtpRepository otpRepository;
+    @Autowired
+    private MailProducer mailProducer;
 
     @Override
     public User getUser(UUID id) {
@@ -101,6 +105,39 @@ public class UserServiceImpl implements UserService {
         otpRepository.delete(otp); // delete after success
         return true;
     }
+    @Override
+    @Transactional
+    public void updateUserRole(UUID userId, Role role) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        List<Role> beforeRoles = List.copyOf(user.getRoles());
+
+        if (!user.getRoles().contains(role)) {
+            user.getRoles().add(role);
+        }
+
+        userRepository.save(user);
+
+        List<Role> afterRoles = user.getRoles();
+
+        // ---- MAIL ----
+        String subject = "Your Roles Have Been Updated";
+
+        String body =
+                "Hello,\n\n" +
+                        "Your account roles have been updated.\n\n" +
+                        "Before: " + beforeRoles + "\n" +
+                        "After: " + afterRoles + "\n\n" +
+                        "If you did not expect this change, contact support.\n\n" +
+                        "Regards,\nTickEBook Team";
+
+        Mail mail = new Mail(user.getEmail(), subject, body);
+
+        mailProducer.sendRoleUpdateMail(mail);
+    }
+
 //
 //	@Override
 //	public RegistrationResponse createUser(RegistrationRequest dto) {

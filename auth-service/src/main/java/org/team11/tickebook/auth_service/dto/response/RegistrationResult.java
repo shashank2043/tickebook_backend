@@ -1,6 +1,6 @@
 package org.team11.tickebook.auth_service.dto.response;
 
-import org.team11.tickebook.auth_service.model.User;
+import org.team11.tickebook.auth_service.model.entity.User;
 
 public class RegistrationResult {
     private User user;

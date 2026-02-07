@@ -1,4 +1,4 @@
-package org.team11.tickebook.auth_service.model;
+package org.team11.tickebook.auth_service.model.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

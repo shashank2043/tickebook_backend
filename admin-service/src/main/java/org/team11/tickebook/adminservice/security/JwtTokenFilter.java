@@ -80,12 +80,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                         .toList();
 
                 // 5. Create Principal
-                User principal = new User(username, "", authorities);
+//                User principal = new User(username, "", authorities);
 
                 // 6. Set Authentication
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
-                                principal,
+                                claims,
                                 null,
                                 authorities
                         );

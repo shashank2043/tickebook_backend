@@ -10,7 +10,9 @@ import java.util.UUID;
 
 public interface RoleApprovalRequestService {
 
-    RoleApprovalResponseDto createRequest(RoleApprovalRequestDto dto);
+    Boolean createRequest(RoleApprovalRequestDto dto);
+
+    List<RoleApprovalResponseDto> checkStatus(UUID id);
 
     RoleApprovalResponseDto reviewRequest(UUID id,
                                           ApprovalStatus status,

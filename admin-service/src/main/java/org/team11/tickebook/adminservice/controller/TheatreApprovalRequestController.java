@@ -14,10 +14,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/theatre-approval-requests")
 public class TheatreApprovalRequestController {
-	@Autowired
+    @Autowired
     private TheatreApprovalRequestService service;
-
-
 
     @PutMapping("/{id}/review")
     @PreAuthorize("hasRole('ADMIN')")

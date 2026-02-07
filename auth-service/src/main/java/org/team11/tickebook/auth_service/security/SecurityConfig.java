@@ -16,15 +16,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -34,15 +37,15 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-                        // PUBLIC
-                        .requestMatchers("/auth/**").permitAll()
+                                // PUBLIC
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/internal/**").permitAll()
+                                // ROLE BASED
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+//                        .requestMatchers("/theater/**").hasRole("THEATEROWNER")
+//                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
 
-                        // ROLE BASED
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/theater/**").hasRole("THEATEROWNER")
-                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

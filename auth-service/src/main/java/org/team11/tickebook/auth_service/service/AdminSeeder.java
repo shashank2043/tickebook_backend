@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.team11.tickebook.auth_service.model.Role;
-import org.team11.tickebook.auth_service.model.User;
+import org.team11.tickebook.auth_service.model.enums.Role;
+import org.team11.tickebook.auth_service.model.entity.User;
 import org.team11.tickebook.auth_service.repository.UserRepository;
 
 import java.util.List;
@@ -24,7 +24,8 @@ public class AdminSeeder implements CommandLineRunner {
             admin.setEmail("admin@tickebook.com");
             admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setRoles(List.of(Role.ADMIN));
-
+            //added just now
+            admin.setActive(true);
             userRepository.save(admin);
 
             System.out.println("Default Admin Created");
