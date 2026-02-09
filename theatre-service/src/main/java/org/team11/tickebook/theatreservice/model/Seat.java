@@ -32,7 +32,7 @@ public class Seat {
     private int positionY;
     private boolean isActive;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "screen_id", nullable = false)
     @JsonIgnore
     private Screen screen;

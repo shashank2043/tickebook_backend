@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.team11.tickebook.theatreservice.dto.request.CreateSeatRequest;
+import org.team11.tickebook.theatreservice.dto.response.SeatDto;
 import org.team11.tickebook.theatreservice.exception.OwnerProfileNotFoundException;
 import org.team11.tickebook.theatreservice.model.Screen;
 import org.team11.tickebook.theatreservice.model.Seat;
@@ -94,6 +95,35 @@ public class SeatServiceImpl implements SeatService {
 
         seat.setActive(false);
         repo.save(seat);
+    }
+
+    @Override
+    public List<SeatDto> getByScreenAsDto(Long screenId, Authentication authentication) {
+        Claims claims = (Claims) authentication.getPrincipal();
+        UUID userId = UUID.fromString(claims.get("userId", String.class));
+
+        TheatreOwnerProfile owner =
+                ownerRepo.findByUserId(userId)
+                        .orElseThrow(() -> new OwnerProfileNotFoundException("Owner not found"));
+
+        Screen screen = screenRepo.findById(screenId)
+                .orElseThrow(() -> new RuntimeException("Screen not found"));
+
+        if (!screen.getTheatre().getOwnerProfile().getId().equals(owner.getId())) {
+            throw new IllegalArgumentException("Access denied");
+        }
+
+        return repo.findByScreen(screen)
+                .stream()
+                .map(seat ->
+                        new SeatDto(seat.getId(),
+                                seat.getRowLabel(),
+                                seat.getSeatNumber(),
+                                seat.getSeatType(),
+                                seat.getPositionX(),
+                                seat.getPositionY(),
+                                seat.isActive())
+                ).toList();
     }
 }
 
