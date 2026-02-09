@@ -36,7 +36,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String token = null;
 
-        if (request.getCookies() != null) {
+        // 1. CHECK AUTHORIZATION HEADER FIRST
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+
+        // 2. FALLBACK TO COOKIE
+        if (token == null && request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if ("accessToken".equals(cookie.getName())) {
                     token = cookie.getValue();
@@ -45,6 +52,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
         }
 
+        // 3. VALIDATE TOKEN
         if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
                 String email = jwtUtil.extractUsername(token);
@@ -71,20 +79,21 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
 
             } catch (Exception ex) {
-                // 🔥 Token is invalid / user deleted / DB reset
 
-//                SecurityContextHolder.clearContext();
-//
-//                // 🔥 Tell browser to delete cookie
-//                response.addHeader(
-//                        "Set-Cookie",
-//                        "accessToken=; Max-Age=0; Path=/; HttpOnly"
-//                );
-                throw new RuntimeException(ex);
+                // OPTIONAL: clear context + delete cookie
+                SecurityContextHolder.clearContext();
+
+                response.addHeader(
+                        "Set-Cookie",
+                        "accessToken=; Max-Age=0; Path=/; HttpOnly"
+                );
+
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return; // stop chain
             }
         }
 
-        // 🔥 ALWAYS continue the chain
+        // 4. CONTINUE CHAIN
         filterChain.doFilter(request, response);
     }
 }
