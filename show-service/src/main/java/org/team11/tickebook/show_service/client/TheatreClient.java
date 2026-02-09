@@ -8,8 +8,8 @@ import org.team11.tickebook.show_service.dto.SeatDto;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient("THEATRE-SERVICE")
+@FeignClient(name = "THEATRE-SERVICE",configuration = FeignConfig.class)
 public interface TheatreClient {
-    @GetMapping("/api/seats/screen/{screenId}")
+    @GetMapping("/internal/seats/screen/{screenId}")
     public List<SeatDto> getSeatsByScreen(@PathVariable Long screenId);
 }

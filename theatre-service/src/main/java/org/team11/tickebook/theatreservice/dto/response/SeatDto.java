@@ -1,10 +1,10 @@
-package org.team11.tickebook.show_service.dto;
+package org.team11.tickebook.theatreservice.dto.response;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.team11.tickebook.show_service.model.SeatType;
+import org.team11.tickebook.theatreservice.model.SeatType;
 
 @Data
 @NoArgsConstructor
@@ -16,5 +16,5 @@ public class SeatDto {
     private SeatType seatType;
     private int positionX;
     private int positionY;
-    private boolean active;
+    private boolean isActive;
 }

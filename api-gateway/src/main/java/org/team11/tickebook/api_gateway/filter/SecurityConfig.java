@@ -1,5 +1,6 @@
 package org.team11.tickebook.api_gateway.filter;
 
+import jakarta.ws.rs.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -49,11 +50,16 @@ public class SecurityConfig {
 
                         // GENERAL AUTHENTICATED
                         .pathMatchers(
-                                "/api/movies/**",
                                 "/api/shows/**",
                                 "/api/theatres/**",
                                 "/api/seats/**"
                         ).authenticated()
+
+                        //Movie Routes
+                        .pathMatchers(HttpMethod.GET, "/api/movies/**").authenticated()
+                        .pathMatchers(HttpMethod.POST,"/api/movies/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/movies/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/movies/**").hasRole("ADMIN")
                         .anyExchange().authenticated()
                 )
                 .build();

@@ -2,6 +2,7 @@ package org.team11.tickebook.show_service.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.team11.tickebook.show_service.client.TheatreClient;
 import org.team11.tickebook.show_service.dto.SeatDto;
 import org.team11.tickebook.show_service.exception.ShowCannotBeUpdatedException;
@@ -27,6 +28,7 @@ public class ShowServiceImpl implements ShowService {
     private final TheatreClient theatreClient;
 
     @Override
+    @Transactional
     public Show createShow(UUID movieId, Long screenId, LocalDateTime start, LocalDateTime end, Map<SeatType, BigDecimal> priceMap) {
         Show show = new Show();
         show.setMovieId(movieId);
