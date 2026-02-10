@@ -19,4 +19,5 @@ public interface ShowService {
     void deleteShow(UUID showId);
 
     List<Show> getAllShows();
+    Show getShow(UUID uuid);
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 @Data
 @AllArgsConstructor
@@ -30,6 +31,6 @@ public class Booking {
     private LocalDateTime expiresAt;
     private  LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<BookingSeat> seats;
 }

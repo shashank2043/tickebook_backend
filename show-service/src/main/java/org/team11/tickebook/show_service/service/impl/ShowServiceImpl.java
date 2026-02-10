@@ -13,6 +13,7 @@ import org.team11.tickebook.show_service.model.ShowSeatStatus;
 import org.team11.tickebook.show_service.repository.ShowRepository;
 import org.team11.tickebook.show_service.repository.ShowSeatRepository;
 import org.team11.tickebook.show_service.service.ShowService;
+import org.team11.tickebook.show_service.service.exception.ShowNotFoundException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -84,6 +85,11 @@ public class ShowServiceImpl implements ShowService {
     @Override
     public List<Show> getAllShows() {
         return showRepository.findAll();
+    }
+
+    @Override
+    public Show getShow(UUID uuid) {
+        return showRepository.findById(uuid).orElseThrow(()->new ShowNotFoundException("Show not found with id "+uuid));
     }
 
 }
