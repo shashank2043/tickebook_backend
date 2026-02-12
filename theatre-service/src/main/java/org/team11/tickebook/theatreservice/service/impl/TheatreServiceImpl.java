@@ -65,6 +65,7 @@ public class TheatreServiceImpl implements TheatreService {
 
         return repo.findByOwnerProfile(ownerProfile);
     }
+
     @Override
     public Theatre get(UUID id) {
         return repo.findById(id)
