@@ -42,4 +42,15 @@ public class JwtUtil {
         System.out.println(claims.get("roles", List.class).toString());
         return claims.get("roles", List.class);
     }
+    private Claims extractClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+    public String extraxtUserId(String token){
+        Claims claims = extractClaims(token);
+        return claims.get("userId",String.class);
+    }
 }

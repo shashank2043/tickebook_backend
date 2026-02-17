@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
         Mail mail = new Mail(user.getEmail(), subject, body);
 
-        mailProducer.sendRoleUpdateMail(mail);
+//        mailProducer.sendRoleUpdateMail(mail);
     }
 
 //

@@ -71,7 +71,7 @@ public class JwtWebFilter implements WebFilter {
 
             Authentication auth =
                     new UsernamePasswordAuthenticationToken(
-                            "user",
+                            jwtUtil.extraxtUserId(token),
                             null,
                             roles.stream()
                                     .map(SimpleGrantedAuthority::new)
