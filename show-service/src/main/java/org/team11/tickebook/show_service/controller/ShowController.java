@@ -47,6 +47,10 @@ public class ShowController {
     public ResponseEntity<List<Show>> getAllShows(){
         return ResponseEntity.ok(showService.getAllShows());
     }
+    @GetMapping("/{showid}")
+    public ResponseEntity<Show> getShow(@PathVariable UUID id){
+        return ResponseEntity.ok(showService.getShow(id));
+    }
     // UPDATE SHOW
     @PutMapping("/{showId}")
     public ResponseEntity<Show> updateShow(

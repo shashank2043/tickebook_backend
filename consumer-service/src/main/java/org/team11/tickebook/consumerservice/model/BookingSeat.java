@@ -19,7 +19,7 @@ public class BookingSeat {
     private UUID  id;
     @ManyToOne
     private Booking booking;
-    private  UUID seatId;
+    private  Long seatId;
     private  UUID showId;
     private BigDecimal seatPrice;
     @Enumerated(EnumType.STRING)

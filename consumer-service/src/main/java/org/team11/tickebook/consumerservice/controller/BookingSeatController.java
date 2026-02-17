@@ -15,10 +15,10 @@ public class BookingSeatController {
 
     private final BookingSeatService bookingSeatService;
 
-    @PostMapping
-    public ResponseEntity<BookingSeat> create(@RequestBody BookingSeat bookingSeat) {
-        return ResponseEntity.ok(bookingSeatService.createBookingSeat(bookingSeat));
-    }
+//    @PostMapping
+//    public ResponseEntity<BookingSeat> create(@RequestBody BookingSeat bookingSeat) {
+//        return ResponseEntity.ok(bookingSeatService.createBookingSeat(bookingSeat));
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<BookingSeat> getById(@PathVariable UUID id) {

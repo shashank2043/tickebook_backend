@@ -1,4 +1,4 @@
-package org.team11.tickebook.show_service.model;
+package org.team11.tickebook.consumerservice.dto;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,14 +10,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class ShowSeat {
-    @Id
-    @GeneratedValue
     private UUID id;
 
     private UUID showId;
