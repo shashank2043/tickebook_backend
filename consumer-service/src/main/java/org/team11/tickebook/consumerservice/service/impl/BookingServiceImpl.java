@@ -9,6 +9,7 @@ import org.team11.tickebook.consumerservice.dto.ShowSeat;
 import org.team11.tickebook.consumerservice.dto.ShowSeatStatus;
 import org.team11.tickebook.consumerservice.dto.request.BookingRequestDto;
 import org.team11.tickebook.consumerservice.dto.response.BookingResponseDto;
+import org.team11.tickebook.consumerservice.exception.BookingException;
 import org.team11.tickebook.consumerservice.model.*;
 import org.team11.tickebook.consumerservice.repository.BookingRepository;
 import org.team11.tickebook.consumerservice.service.BookingService;
@@ -133,7 +134,7 @@ public class BookingServiceImpl implements BookingService {
             ShowSeat lockedSeat = showClient.bookSeat(seat);
 
             if (lockedSeat == null) {
-                throw new RuntimeException("Seat locking failed: " + seat.getSeatId());
+                throw new BookingException("Seat locking failed: " + seat.getSeatId());
             }
 
             // ---------- Create BookingSeat ----------
@@ -163,7 +164,7 @@ public class BookingServiceImpl implements BookingService {
     public BookingResponseDto getBookingById(UUID bookingId) {
 
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+                .orElseThrow(() -> new BookingException("Booking not found"));
 
         return mapToResponse(booking);
     }

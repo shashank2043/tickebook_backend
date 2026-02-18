@@ -14,10 +14,10 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    @PostMapping
-    public ResponseEntity<Ticket> generateTicket(@RequestBody Ticket ticket) {
-        return ResponseEntity.ok(ticketService.generateTicket(ticket));
-    }
+//    @PostMapping
+//    public ResponseEntity<Ticket> generateTicket(@RequestBody Ticket ticket) {
+//        return ResponseEntity.ok(ticketService.generateTicket(ticket));
+//    }
 
     @GetMapping("/{ticketId}")
     public ResponseEntity<Ticket> getTicket(@PathVariable UUID ticketId) {

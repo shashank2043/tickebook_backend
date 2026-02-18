@@ -1,7 +1,10 @@
 package org.team11.tickebook.consumerservice.dto.request;
 
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,10 +19,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookingRequestDto {
-    @Null
+    @Null(message = "userId must be null")
     private UUID userId;
+    @NotNull(message = "showId cannot be Null")
     private UUID showId;
-    private List<Long> seatId;
+    @NotEmpty(message = "seatIds cannot be empty")
+    private List<
+            @NotNull(message = "seatId cannot be null")
+            @Positive(message = "seatId must be positive")
+                    Long> seatId;
 //    private List<ShowSeat> seats;
 }
 
