@@ -112,6 +112,17 @@ public class SeatServiceTest {
 
         assertTrue(result.isActive());
     }
+    @Test
+    void create_shouldThrowException_whenScreenNotFound() {
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(screenRepo.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class,
+                () -> service.create(buildRequest(), authentication));
+    }
 
     // ---------- GET BY SCREEN ----------
 
@@ -142,6 +153,43 @@ public class SeatServiceTest {
 
         assertTrue(result.isEmpty());
     }
+    @Test
+    void getByScreen_shouldThrowOwnerProfileNotFound_whenOwnerMissing() {
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.empty());
+
+        assertThrows(OwnerProfileNotFoundException.class,
+                () -> service.getByScreen(screen.getId(), authentication));
+    }
+    @Test
+    void getByScreen_shouldThrowException_whenScreenNotFound() {
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(screenRepo.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class,
+                () -> service.getByScreen(screen.getId(), authentication));
+    }
+    @Test
+    void getByScreen_shouldThrowIllegalArgument_whenUserNotOwner() {
+
+        TheatreOwnerProfile otherOwner = new TheatreOwnerProfile();
+        otherOwner.setId(UUID.randomUUID());
+        theatre.setOwnerProfile(otherOwner);
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(screenRepo.findById(screen.getId())).thenReturn(Optional.of(screen));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.getByScreen(screen.getId(), authentication));
+    }
+
 
     // ---------- DEACTIVATE ----------
 
@@ -175,6 +223,35 @@ public class SeatServiceTest {
         assertThrows(RuntimeException.class,
                 () -> service.deactivate(1L, authentication));
     }
+    @Test
+    void deactivate_shouldThrowOwnerProfileNotFound_whenOwnerMissing() {
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.empty());
+
+        assertThrows(OwnerProfileNotFoundException.class,
+                () -> service.deactivate(1L, authentication));
+    }
+    @Test
+    void deactivate_shouldThrowIllegalArgument_whenUserNotOwner() {
+
+        TheatreOwnerProfile otherOwner = new TheatreOwnerProfile();
+        otherOwner.setId(UUID.randomUUID());
+        theatre.setOwnerProfile(otherOwner);
+
+        Seat seat = buildSeat();
+        seat.setScreen(screen);
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(seatRepo.findById(1L)).thenReturn(Optional.of(seat));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.deactivate(1L, authentication));
+    }
+
 
     // ---------- DTO ----------
 
@@ -193,6 +270,42 @@ public class SeatServiceTest {
 
         assertEquals(1, result.size());
         assertEquals("A", result.get(0).getRowLabel());
+    }
+    @Test
+    void getByScreenAsDto_shouldThrowOwnerProfileNotFound_whenOwnerMissing() {
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.empty());
+
+        assertThrows(OwnerProfileNotFoundException.class,
+                () -> service.getByScreenAsDto(screen.getId(), authentication));
+    }
+    @Test
+    void getByScreenAsDto_shouldThrowException_whenScreenNotFound() {
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(screenRepo.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class,
+                () -> service.getByScreenAsDto(screen.getId(), authentication));
+    }
+    @Test
+    void getByScreenAsDto_shouldThrowIllegalArgument_whenUserNotOwner() {
+
+        TheatreOwnerProfile otherOwner = new TheatreOwnerProfile();
+        otherOwner.setId(UUID.randomUUID());
+        theatre.setOwnerProfile(otherOwner);
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(screenRepo.findById(screen.getId())).thenReturn(Optional.of(screen));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.getByScreenAsDto(screen.getId(), authentication));
     }
 
     // ---------- HELPERS ----------

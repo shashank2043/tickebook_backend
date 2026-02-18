@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ScreenController.class)
 @AutoConfigureMockMvc(addFilters = true)
 @ContextConfiguration(classes = TheatreServiceApplication.class)
-class ScreenControllerTest {
+public class ScreenControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -89,14 +89,16 @@ class ScreenControllerTest {
                         .content("{bad_json}"))
                 .andExpect(status().isBadRequest());
     }
-
     @Test
     void create_shouldReturn500_whenServiceThrows() throws Exception {
         when(service.create(any(), any())).thenThrow(new RuntimeException());
 
-        CreateScreenRequest req = new CreateScreenRequest(
-                "S", 1, 50, UUID.randomUUID()
-        );
+        CreateScreenRequest req = CreateScreenRequest.builder()
+                .name("Screen 1")
+                .screenNumber(1)
+                .totalSeats(100)
+                .theatreId(UUID.randomUUID())
+                .build();
 
         mockMvc.perform(post("/api/screens")
                         .principal(auth())
@@ -104,6 +106,95 @@ class ScreenControllerTest {
                         .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isInternalServerError());
     }
+    @Test
+    void create_shouldReturn400_whenNameBlank() throws Exception {
+        CreateScreenRequest req = CreateScreenRequest.builder()
+                .name("")
+                .screenNumber(1)
+                .totalSeats(100)
+                .theatreId(UUID.randomUUID())
+                .build();
+
+        mockMvc.perform(post("/api/screens")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void create_shouldReturn400_whenNameTooShort() throws Exception {
+        CreateScreenRequest req = CreateScreenRequest.builder()
+                .name("A")
+                .screenNumber(1)
+                .totalSeats(100)
+                .theatreId(UUID.randomUUID())
+                .build();
+
+        mockMvc.perform(post("/api/screens")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void create_shouldReturn400_whenScreenNumberNull() throws Exception {
+        CreateScreenRequest req = CreateScreenRequest.builder()
+                .name("Screen 1")
+                .totalSeats(100)
+                .theatreId(UUID.randomUUID())
+                .build();
+
+        mockMvc.perform(post("/api/screens")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void create_shouldReturn400_whenScreenNumberNegative() throws Exception {
+        CreateScreenRequest req = CreateScreenRequest.builder()
+                .name("Screen 1")
+                .screenNumber(-1)
+                .totalSeats(100)
+                .theatreId(UUID.randomUUID())
+                .build();
+
+        mockMvc.perform(post("/api/screens")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void create_shouldReturn400_whenTotalSeatsTooHigh() throws Exception {
+        CreateScreenRequest req = CreateScreenRequest.builder()
+                .name("Screen 1")
+                .screenNumber(1)
+                .totalSeats(2000)
+                .theatreId(UUID.randomUUID())
+                .build();
+
+        mockMvc.perform(post("/api/screens")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void create_shouldReturn400_whenTheatreIdMissing() throws Exception {
+        CreateScreenRequest req = CreateScreenRequest.builder()
+                .name("Screen 1")
+                .screenNumber(1)
+                .totalSeats(100)
+                .build();
+
+        mockMvc.perform(post("/api/screens")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(req)))
+                .andExpect(status().isBadRequest());
+    }
+
 
     // ---------------- GET BY THEATRE ----------------
 

@@ -1,5 +1,6 @@
 package org.team11.tickebook.theatreservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class SeatController {
 
     @PostMapping
     public Seat create(
-            @RequestBody CreateSeatRequest request,
+            @RequestBody @Valid CreateSeatRequest request,
             Authentication authentication
     ) {
         return service.create(request, authentication);

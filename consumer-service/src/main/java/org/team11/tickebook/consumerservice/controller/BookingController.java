@@ -1,5 +1,6 @@
 package org.team11.tickebook.consumerservice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,9 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<BookingResponseDto> createBooking(
-            @RequestBody BookingRequestDto request) {
-
+            @RequestBody BookingRequestDto request, HttpServletRequest servletRequest) {
+        UUID userId = UUID.fromString(servletRequest.getHeader("X-User-Id"));
+        request.setUserId(userId);
         BookingResponseDto response = bookingService.createBooking(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

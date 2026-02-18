@@ -16,6 +16,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BookingRequestDto {
     private UUID userId;
-    private List<ShowSeat> seats;
+    private UUID showId;
+    private List<Long> seatId;
+//    private List<ShowSeat> seats;
 }
 

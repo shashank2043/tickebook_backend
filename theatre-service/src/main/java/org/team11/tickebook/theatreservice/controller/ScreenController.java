@@ -1,5 +1,6 @@
 package org.team11.tickebook.theatreservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class ScreenController {
     private final ScreenService service;
 
     @PostMapping
-    public Screen create(@RequestBody CreateScreenRequest screenRequest, Authentication authentication) {
+    public Screen create(@RequestBody @Valid CreateScreenRequest screenRequest, Authentication authentication) {
         return service.create(screenRequest,authentication);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.team11.tickebook.auth_service.client.AdminClient;
@@ -28,14 +29,22 @@ public class UserController {
     private AdminClient adminClient;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getUser(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(service.getUser(id));
     }
+    @GetMapping
+    public ResponseEntity<?> getMyProfile(Authentication authentication){
+        CustomUserDetails user =
+                (CustomUserDetails) authentication.getPrincipal();
 
+        UUID userId = user.getId();
+        return ResponseEntity.ok(service.getUser(userId));
+    }
     @PostMapping("/verify")
     public ResponseEntity<?> generateOtp(Authentication authentication) {
         String email = authentication.getName(); // comes from JWT
-        System.out.println(email);
+//        System.out.println(email);
         service.generateOtp(email);
         return ResponseEntity.status(HttpStatus.CREATED).body("Otp sent to the email address: " + email);
     }

@@ -146,6 +146,63 @@ class ScreenServiceTest {
 
         assertTrue(result.getIsActive());
     }
+    @Test
+    void create_shouldSetTimestampsAndTheatre() {
+
+        CreateScreenRequest req = new CreateScreenRequest(
+                "Screen Z", 5, 150, theatre.getId()
+        );
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(theatreRepo.findById(theatre.getId())).thenReturn(Optional.of(theatre));
+        when(screenRepo.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        Screen result = service.create(req, authentication);
+
+        assertNotNull(result.getCreatedAt());
+        assertNotNull(result.getUpdatedAt());
+        assertEquals(theatre, result.getTheatre());
+    }
+    @Test
+    void create_shouldForceIdNull() {
+
+        CreateScreenRequest req = new CreateScreenRequest(
+                "Screen Z", 5, 150, theatre.getId()
+        );
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(theatreRepo.findById(theatre.getId())).thenReturn(Optional.of(theatre));
+        when(screenRepo.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        Screen result = service.create(req, authentication);
+
+        assertNull(result.getId());
+    }
+    @Test
+    void create_shouldThrowIllegalArgument_whenTheatreHasNoOwnerProfile() {
+
+        // theatre exists but has NO owner
+        theatre.setOwnerProfile(null);
+
+        CreateScreenRequest req = new CreateScreenRequest(
+                "Screen 1", 1, 100, theatre.getId()
+        );
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(theatreRepo.findById(theatre.getId())).thenReturn(Optional.of(theatre));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.create(req, authentication));
+
+        verify(screenRepo, never()).save(any());
+    }
+
 
     // ---------- GET BY THEATRE ----------
 
@@ -216,4 +273,22 @@ class ScreenServiceTest {
 
         assertTrue(result.isEmpty());
     }
+    @Test
+    void getByTheatre_shouldNotCallRepo_whenUserNotOwner() {
+
+        TheatreOwnerProfile otherOwner = new TheatreOwnerProfile();
+        otherOwner.setId(UUID.randomUUID());
+        theatre.setOwnerProfile(otherOwner);
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(theatreRepo.findById(theatre.getId())).thenReturn(Optional.of(theatre));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.getByTheatre(theatre.getId(), authentication));
+
+        verify(screenRepo, never()).findByTheatre(any());
+    }
+
 }

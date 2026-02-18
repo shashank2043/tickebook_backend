@@ -217,4 +217,70 @@ class OwnerProfileServiceTest {
         assertThrows(OwnerProfileNotFoundException.class,
                 () -> service.verifyOwner(profile.getId()));
     }
+    // ---------- CHECK STATUS ----------
+    @Test
+    void checkStatus_shouldReturnList_whenValidOwnerAndTheatre() {
+        UUID theatreId = UUID.randomUUID();
+        List<TheatreApprovalResponseDto> list =
+                List.of(new TheatreApprovalResponseDto());
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(profileRepository.findByUserId(userId)).thenReturn(Optional.of(profile));
+        when(theatreRepository.existsByIdAndOwnerProfile(theatreId, profile))
+                .thenReturn(true);
+        when(adminClient.checkStatus(theatreId))
+                .thenReturn(ResponseEntity.ok(list));
+
+        List<TheatreApprovalResponseDto> result =
+                service.checkStatus(theatreId, authentication);
+
+        assertEquals(1, result.size());
+        verify(adminClient).checkStatus(theatreId);
+    }
+    @Test
+    void checkStatus_shouldThrowException_whenProfileNotFound() {
+        UUID theatreId = UUID.randomUUID();
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(profileRepository.findByUserId(userId))
+                .thenReturn(Optional.empty());
+
+        assertThrows(OwnerProfileNotFoundException.class,
+                () -> service.checkStatus(theatreId, authentication));
+    }
+    @Test
+    void checkStatus_shouldThrowException_whenTheatreNotOwned() {
+        UUID theatreId = UUID.randomUUID();
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(profileRepository.findByUserId(userId))
+                .thenReturn(Optional.of(profile));
+        when(theatreRepository.existsByIdAndOwnerProfile(theatreId, profile))
+                .thenReturn(false);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.checkStatus(theatreId, authentication));
+    }
+    @Test
+    void checkStatus_shouldReturnEmptyList_whenAdminReturnsEmpty() {
+        UUID theatreId = UUID.randomUUID();
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(profileRepository.findByUserId(userId))
+                .thenReturn(Optional.of(profile));
+        when(theatreRepository.existsByIdAndOwnerProfile(theatreId, profile))
+                .thenReturn(true);
+        when(adminClient.checkStatus(theatreId))
+                .thenReturn(ResponseEntity.ok(List.of()));
+
+        List<TheatreApprovalResponseDto> result =
+                service.checkStatus(theatreId, authentication);
+
+        assertTrue(result.isEmpty());
+    }
+
 }

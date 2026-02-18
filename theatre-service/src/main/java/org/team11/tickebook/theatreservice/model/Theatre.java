@@ -2,7 +2,10 @@ package org.team11.tickebook.theatreservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Theatre {
@@ -19,7 +23,11 @@ public class Theatre {
     @GeneratedValue
     private UUID id;
 
+    @NotBlank(message = "City is required")
+    @Size(min = 2, max = 50, message = "City must be between 2 and 50 characters")
     private String city;
+    @NotBlank(message = "Theatre name is required")
+    @Size(min = 2, max = 100, message = "Theatre name must be between 2 and 100 characters")
     private String name;
     private Boolean isActive;
 
@@ -37,4 +45,17 @@ public class Theatre {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    @PrePersist
+    public void prePersist() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+        if (isActive == null) {
+            isActive = true; // default
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

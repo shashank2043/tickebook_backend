@@ -74,6 +74,20 @@ class TheatreServiceTest {
         assertThrows(OwnerProfileNotFoundException.class,
                 () -> service.create(new Theatre(), authentication));
     }
+    @Test
+    void create_shouldSetTimestampsAndActiveTrue() {
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(theatreRepo.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        Theatre result = service.create(new Theatre(), authentication);
+
+        assertNotNull(result.getCreatedAt());
+        assertNotNull(result.getUpdatedAt());
+        assertTrue(result.getIsActive());
+    }
 
     // ---------- GET MY THEATRES ----------
 
@@ -185,4 +199,33 @@ class TheatreServiceTest {
         assertThrows(TheatreNotFoundException.class,
                 () -> service.deactivate(theatre.getId(), authentication));
     }
+    @Test
+    void deactivate_shouldThrowOwnerProfileNotFound_whenOwnerMissing() {
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.empty());
+
+        assertThrows(OwnerProfileNotFoundException.class,
+                () -> service.deactivate(theatre.getId(), authentication));
+    }
+    @Test
+    void deactivate_shouldNotSave_whenUserNotOwner() {
+
+        TheatreOwnerProfile otherOwner = new TheatreOwnerProfile();
+        otherOwner.setId(UUID.randomUUID());
+        theatre.setOwnerProfile(otherOwner);
+
+        when(authentication.getPrincipal()).thenReturn(claims);
+        when(claims.get("userId", String.class)).thenReturn(userId.toString());
+        when(ownerRepo.findByUserId(userId)).thenReturn(Optional.of(owner));
+        when(theatreRepo.findById(theatre.getId()))
+                .thenReturn(Optional.of(theatre));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> service.deactivate(theatre.getId(), authentication));
+
+        verify(theatreRepo, never()).save(any());
+    }
+
 }

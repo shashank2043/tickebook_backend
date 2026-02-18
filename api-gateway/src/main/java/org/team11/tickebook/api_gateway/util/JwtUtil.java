@@ -39,7 +39,7 @@ public class JwtUtil {
     }
     public List<String> extractRoles(String token) {
         Claims claims = getAllClaimsFromToken(token);
-        System.out.println(claims.get("roles", List.class).toString());
+//        System.out.println(claims.get("roles", List.class).toString());
         return claims.get("roles", List.class);
     }
     private Claims extractClaims(String token) {
@@ -49,7 +49,7 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
-    public String extraxtUserId(String token){
+    public String extractUserId(String token){
         Claims claims = extractClaims(token);
         return claims.get("userId",String.class);
     }

@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(OwnerProfileController.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ContextConfiguration(classes = TheatreServiceApplication.class)
-class OwnerProfileControllerTest {
+public class OwnerProfileControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -58,15 +58,26 @@ class OwnerProfileControllerTest {
 
     @Test
     void create_shouldReturn200_whenValidRequest() throws Exception {
-        TheatreOwnerProfile profile = new TheatreOwnerProfile();
-        profile.setId(UUID.randomUUID());
+        TheatreOwnerProfile request = TheatreOwnerProfile.builder()
+                .userId(UUID.randomUUID())
+                .businessName("ABC Theatres")
+                .businessEmail("abc@test.com")
+                .businessAddress("Hyderabad City")
+                .build();
 
-        when(service.create(any())).thenReturn(profile);
+        TheatreOwnerProfile response = TheatreOwnerProfile.builder()
+                .id(UUID.randomUUID())
+                .businessName("ABC Theatres")
+                .businessEmail("abc@test.com")
+                .businessAddress("Hyderabad City")
+                .build();
+
+        when(service.create(any())).thenReturn(response);
 
         mockMvc.perform(post("/api/owner")
                         .principal(auth())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(profile)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
     }
 
@@ -91,13 +102,57 @@ class OwnerProfileControllerTest {
     void create_shouldReturn500_whenServiceThrows() throws Exception {
         when(service.create(any())).thenThrow(new RuntimeException());
 
-        TheatreOwnerProfile profile = new TheatreOwnerProfile();
+        TheatreOwnerProfile profile = TheatreOwnerProfile.builder()
+                .userId(UUID.randomUUID())
+                .businessName("ABC Theatres")
+                .businessEmail("abc@test.com")
+                .businessAddress("Hyderabad City")
+                .build();
 
         mockMvc.perform(post("/api/owner")
                         .principal(auth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(profile)))
                 .andExpect(status().isInternalServerError());
+    }
+    @Test
+    void create_shouldReturn400_whenBusinessNameBlank() throws Exception {
+        TheatreOwnerProfile profile = new TheatreOwnerProfile();
+        profile.setBusinessName(""); // invalid
+        profile.setBusinessEmail("test@test.com");
+        profile.setBusinessAddress("Hyderabad");
+
+        mockMvc.perform(post("/api/owner")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(profile)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void create_shouldReturn400_whenEmailInvalid() throws Exception {
+        TheatreOwnerProfile profile = new TheatreOwnerProfile();
+        profile.setBusinessName("ABC Theatres");
+        profile.setBusinessEmail("wrongEmail"); // invalid
+        profile.setBusinessAddress("Hyderabad");
+
+        mockMvc.perform(post("/api/owner")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(profile)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void create_shouldReturn400_whenAddressTooShort() throws Exception {
+        TheatreOwnerProfile profile = new TheatreOwnerProfile();
+        profile.setBusinessName("ABC");
+        profile.setBusinessEmail("abc@test.com");
+        profile.setBusinessAddress("A"); // < 5 chars
+
+        mockMvc.perform(post("/api/owner")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(profile)))
+                .andExpect(status().isBadRequest());
     }
 
     // ---------------- GET ME ----------------
@@ -135,7 +190,11 @@ class OwnerProfileControllerTest {
     void approvalRequest_shouldReturn200_whenSuccess() throws Exception {
         when(service.requestTheatreApproval(any(), any())).thenReturn(true);
 
-        TheatreApprovalRequestDto dto = new TheatreApprovalRequestDto();
+        TheatreApprovalRequestDto dto = TheatreApprovalRequestDto.builder()
+                .theatreId(UUID.randomUUID())
+                .theatreOwnerProfileId(UUID.randomUUID())
+                .remarks("Valid")
+                .build();
 
         mockMvc.perform(post("/api/owner/approval-request")
                         .principal(auth())
@@ -170,13 +229,76 @@ class OwnerProfileControllerTest {
         when(service.requestTheatreApproval(any(), any()))
                 .thenThrow(new RuntimeException());
 
-        TheatreApprovalRequestDto dto = new TheatreApprovalRequestDto();
+        TheatreApprovalRequestDto dto = TheatreApprovalRequestDto.builder()
+                .theatreOwnerProfileId(UUID.randomUUID())
+                .theatreId(UUID.randomUUID())
+                .remarks("ok")
+                .build();
 
         mockMvc.perform(post("/api/owner/approval-request")
                         .principal(auth())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isInternalServerError());
+    }
+    @Test
+    void approvalRequest_shouldReturn400_whenServiceReturnsFalse() throws Exception {
+        when(service.requestTheatreApproval(any(), any())).thenReturn(false);
+
+        TheatreApprovalRequestDto dto = TheatreApprovalRequestDto.builder()
+                .theatreId(UUID.randomUUID())
+                .theatreOwnerProfileId(UUID.randomUUID())
+                .remarks("Valid remarks")
+                .build();
+
+        mockMvc.perform(post("/api/owner/approval-request")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void approvalRequest_shouldReturn400_whenTheatreIdMissing() throws Exception {
+        TheatreApprovalRequestDto dto = TheatreApprovalRequestDto.builder()
+                .theatreOwnerProfileId(UUID.randomUUID())
+                .remarks("ok")
+                .build();
+
+        mockMvc.perform(post("/api/owner/approval-request")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void approvalRequest_shouldReturn400_whenOwnerProfileMissing() throws Exception {
+        TheatreApprovalRequestDto dto = TheatreApprovalRequestDto.builder()
+                .theatreId(UUID.randomUUID())
+                .remarks("ok")
+                .build();
+
+        mockMvc.perform(post("/api/owner/approval-request")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
+    }
+    @Test
+    void approvalRequest_shouldReturn400_whenRemarksTooLong() throws Exception {
+        String longRemarks = "A".repeat(600);
+
+        TheatreApprovalRequestDto dto = TheatreApprovalRequestDto.builder()
+                .theatreId(UUID.randomUUID())
+                .theatreOwnerProfileId(UUID.randomUUID())
+                .remarks(longRemarks)
+                .build();
+
+        mockMvc.perform(post("/api/owner/approval-request")
+                        .principal(auth())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest());
     }
 
     // ---------------- CHECK STATUS ----------------

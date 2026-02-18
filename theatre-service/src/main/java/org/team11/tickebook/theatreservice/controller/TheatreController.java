@@ -1,5 +1,6 @@
 package org.team11.tickebook.theatreservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class TheatreController {
     // Create theatre for logged-in owner only
     @PostMapping
     public Theatre create(
-            @RequestBody Theatre theatre,
+            @RequestBody @Valid Theatre theatre,
             Authentication authentication
     ) {
         return service.create(theatre, authentication);

@@ -2,6 +2,7 @@ package org.team11.tickebook.theatreservice.controller;
 
 import io.jsonwebtoken.Claims;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,7 +25,7 @@ public class OwnerProfileController {
     @PostMapping
     public TheatreOwnerProfile create(
             Authentication authentication,
-            @RequestBody TheatreOwnerProfile p
+            @RequestBody @Valid TheatreOwnerProfile p
     ) {
         Claims claims = (Claims) authentication.getPrincipal();
 
@@ -46,7 +47,7 @@ public class OwnerProfileController {
     }
 
     @PostMapping("/approval-request")
-    public ResponseEntity<?> approvalRequest(@RequestBody TheatreApprovalRequestDto dto,Authentication authentication){
+    public ResponseEntity<?> approvalRequest(@RequestBody @Valid TheatreApprovalRequestDto dto,Authentication authentication){
         Boolean response = service.requestTheatreApproval(authentication,dto);
         if(response) return ResponseEntity.ok("Theatre Approval Request Placed successfully");
         return ResponseEntity.badRequest().body("Unable to place Theatre Approval Request");
