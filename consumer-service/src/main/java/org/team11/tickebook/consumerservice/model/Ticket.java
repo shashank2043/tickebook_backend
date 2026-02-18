@@ -1,9 +1,7 @@
 package org.team11.tickebook.consumerservice.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +15,7 @@ import java.util.UUID;
 @Table(name="ticket")
 public class Ticket {
     @Id
+    @GeneratedValue
     private UUID id;
     @OneToOne
     private Booking booking;

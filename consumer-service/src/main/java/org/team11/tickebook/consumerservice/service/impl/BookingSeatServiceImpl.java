@@ -3,6 +3,7 @@ package org.team11.tickebook.consumerservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.team11.tickebook.consumerservice.exception.BookingSeatException;
 import org.team11.tickebook.consumerservice.model.BookingSeat;
 import org.team11.tickebook.consumerservice.model.BookingSeatStatus;
 import org.team11.tickebook.consumerservice.repository.BookingSeatRepository;
@@ -26,7 +27,7 @@ public class BookingSeatServiceImpl implements BookingSeatService {
     @Override
     public BookingSeat getBookingSeatById(UUID id) {
         return bookingSeatRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("BookingSeat not found"));
+                .orElseThrow(() -> new BookingSeatException("BookingSeat not found"));
     }
 
     @Override
