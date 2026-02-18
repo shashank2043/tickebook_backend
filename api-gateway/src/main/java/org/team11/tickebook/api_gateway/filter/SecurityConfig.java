@@ -35,7 +35,8 @@ public class SecurityConfig {
                         // ADMIN
                         .pathMatchers(
                                 "/api/theatre-approval-requests/**",
-                                "/api/role-approval-requests/**"
+                                "/api/role-approval-requests/**",
+                                "/api/admins/**"
                         ).hasRole("ADMIN")
 
                         // OWNER
