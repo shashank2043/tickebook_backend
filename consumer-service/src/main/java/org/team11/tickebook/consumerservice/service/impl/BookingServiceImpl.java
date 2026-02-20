@@ -3,8 +3,7 @@ package org.team11.tickebook.consumerservice.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.team11.tickebook.consumerservice.cilent.ShowClient;
-import org.team11.tickebook.consumerservice.dto.Show;
+import org.team11.tickebook.consumerservice.client.ShowClient;
 import org.team11.tickebook.consumerservice.dto.ShowSeat;
 import org.team11.tickebook.consumerservice.dto.ShowSeatStatus;
 import org.team11.tickebook.consumerservice.dto.request.BookingRequestDto;
@@ -131,7 +130,7 @@ public class BookingServiceImpl implements BookingService {
             seat.setLockedAt(LocalDateTime.now());
             seat.setLockedByUserId(request.getUserId());
 
-            ShowSeat lockedSeat = showClient.bookSeat(seat);
+            ShowSeat lockedSeat = showClient.lockSeat(seat);
 
             if (lockedSeat == null) {
                 throw new BookingException("Seat locking failed: " + seat.getSeatId());

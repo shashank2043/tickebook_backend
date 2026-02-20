@@ -1,5 +1,6 @@
 package org.team11.tickebook.consumerservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class BookingSeat {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID  id;
     @ManyToOne
+    @JsonIgnore
     private Booking booking;
     private  Long seatId;
     private  UUID showId;

@@ -1,12 +1,12 @@
 spring:
   application:
     name: config-server
-  profiles:
-    active: native
   cloud:
     config:
       server:
-        native:
-          search-locations: classpath:/config/
+        git:
+          uri: https://github.com/shashank2043/tickebook_config
+          username: shashank2043
+          password: ${GIT_TOKEN}
 server:
   port: 8888

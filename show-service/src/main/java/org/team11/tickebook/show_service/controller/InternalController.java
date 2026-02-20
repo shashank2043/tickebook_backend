@@ -10,12 +10,25 @@ import org.team11.tickebook.show_service.model.ShowSeat;
 import org.team11.tickebook.show_service.service.ShowSeatService;
 
 @RestController
-@RequestMapping("/internal")
+@RequestMapping("/internal/seats")
 @RequiredArgsConstructor
 public class InternalController {
+
     private final ShowSeatService seatService;
-    @PostMapping("/bookseat")
-    public ResponseEntity<?> updateSeat(@RequestBody ShowSeat showSeat){
-        return ResponseEntity.ok(seatService.bookSeat(showSeat));
+
+    @PostMapping("/lock")
+    public ShowSeat lockSeat(@RequestBody ShowSeat seat) {
+        return seatService.lockSeat(seat);
+    }
+
+    @PostMapping("/confirm")
+    public ShowSeat confirmSeat(@RequestBody ShowSeat seat) {
+        return seatService.confirmSeat(seat);
+    }
+
+    @PostMapping("/release")
+    public ShowSeat releaseSeat(@RequestBody ShowSeat seat) {
+        return seatService.releaseSeat(seat);
     }
 }
+

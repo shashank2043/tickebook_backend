@@ -18,7 +18,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket generateTicket(Ticket ticket) {
         ticket.setIssuedAt(LocalDateTime.now());
-        ticket.setQrCode("QR-" + ticket.getId()); // later replace with real QR logic
+        ticket.setQrCode("QR-" + ticket.getBooking().getBookingNumber()); // later replace with real QR logic
         return ticketRepository.save(ticket);
     }
 

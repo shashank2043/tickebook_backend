@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.team11.tickebook.consumerservice.dto.request.BookingRequestDto;
 import org.team11.tickebook.consumerservice.dto.response.BookingResponseDto;
+import org.team11.tickebook.consumerservice.model.Ticket;
+import org.team11.tickebook.consumerservice.service.BookingPaymentService;
 import org.team11.tickebook.consumerservice.service.BookingService;
 
 import java.util.UUID;
@@ -20,6 +22,7 @@ import java.util.UUID;
 public class BookingController {
 
     private final BookingService bookingService;
+    private final BookingPaymentService bookingPaymentService;
 
     @PostMapping
     public ResponseEntity<BookingResponseDto> createBooking(
@@ -36,6 +39,12 @@ public class BookingController {
 
         BookingResponseDto response = bookingService.getBookingById(id);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{id}/pay")
+    public ResponseEntity<Ticket> pay(@PathVariable UUID id) {
+        Ticket ticket = bookingPaymentService.payForBooking(id);
+        return ResponseEntity.ok(ticket);
     }
 }
 

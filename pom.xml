@@ -63,5 +63,6 @@
     <module>config-server</module>
     <module>show-service</module>
     <module>auth-service</module>
+    <module>payment-service</module>
 </modules>
 </project>

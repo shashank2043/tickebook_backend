@@ -1,7 +1,7 @@
 package org.team11.tickebook.consumerservice.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.team11.tickebook.consumerservice.cilent.ShowClient;
+import org.team11.tickebook.consumerservice.client.ShowClient;
 import org.team11.tickebook.consumerservice.dto.Show;
 import org.team11.tickebook.consumerservice.service.BrowseService;
 

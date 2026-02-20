@@ -1,7 +1,6 @@
-package org.team11.tickebook.consumerservice.cilent;
+package org.team11.tickebook.consumerservice.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +19,14 @@ public interface ShowClient {
     public Show getShow(@PathVariable UUID uuid);
     @GetMapping("/api/shows/{showId}/seats")
     public List<ShowSeat> getSeats(@PathVariable UUID showId);
-    @PostMapping("/internal/bookseat")
-    ShowSeat bookSeat(@RequestBody ShowSeat showSeat);
+//    @PostMapping("/internal/bookseat")
+//    ShowSeat bookSeat(@RequestBody ShowSeat showSeat);
+    @PostMapping("/internal/seats/lock")
+    ShowSeat lockSeat(@RequestBody ShowSeat seat);
+
+    @PostMapping("/internal/seats/confirm")
+    ShowSeat confirmSeat(@RequestBody ShowSeat seat);
+
+    @PostMapping("/internal/seats/release")
+    ShowSeat releaseSeat(@RequestBody ShowSeat seat);
 }
