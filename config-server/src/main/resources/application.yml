@@ -8,5 +8,13 @@ spring:
           uri: https://github.com/shashank2043/tickebook_config
           username: shashank2043
           password: ${GIT_TOKEN}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env,loggers
+  endpoint:
+    health:
+      show-details: always
 server:
   port: 8888

@@ -27,6 +27,7 @@ public class SecurityConfig {
 
                         // Everything else is locked
                         .requestMatchers("/internal/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Add our Custom Filter BEFORE the standard Username/Password check

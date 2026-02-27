@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 // PUBLIC
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/internal/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
                                 // ROLE BASED
 //                        .requestMatchers("/admin/**").hasRole("ADMIN")
 //                        .requestMatchers("/theater/**").hasRole("THEATEROWNER")
