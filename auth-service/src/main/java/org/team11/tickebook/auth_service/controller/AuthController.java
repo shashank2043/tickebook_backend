@@ -19,6 +19,7 @@ import org.team11.tickebook.auth_service.dto.response.RegistrationResult;
 import org.team11.tickebook.auth_service.security.CustomUserDetailsService;
 import org.team11.tickebook.auth_service.security.JwtUtil;
 import org.team11.tickebook.auth_service.service.AuthService;
+import org.team11.tickebook.commondtos.authservice.LoginResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -49,9 +50,14 @@ public class AuthController {
                 .maxAge(60 * 60)       // 1 hour
                 .sameSite("Strict")    // CSRF protection
                 .build();
+        LoginResponse loginResponse = LoginResponse.builder()
+                .userId(jwtUtil.extraxtUserId(token))
+                .token(token).success(true)
+                .message("Login Successful!")
+                .build();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body("Login successful" + "\nUser Id: "+jwtUtil.extraxtUserId(token));
+                .body(loginResponse);
     }
     @PostMapping("/register")
     public ResponseEntity<RegistrationResponse> register(

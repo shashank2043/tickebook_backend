@@ -1,5 +1,6 @@
 package org.team11.tickebook.auth_service.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/internal")
+@Hidden
 @RequiredArgsConstructor
 public class InternalController {
 

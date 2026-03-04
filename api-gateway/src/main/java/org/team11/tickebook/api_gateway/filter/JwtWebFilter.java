@@ -28,7 +28,7 @@ public class JwtWebFilter implements WebFilter {
 
         String path = exchange.getRequest().getURI().getPath();
 
-        if (path.startsWith("/auth/") || path.startsWith("/eureka")) {
+        if (path.startsWith("/auth/") || path.startsWith("/eureka") || path.startsWith("/swagger") || path.startsWith("/v3/")||path.startsWith("/webjars/") || path.startsWith("/actuator") || path.startsWith("/auth-service-swagger/")) {
             return chain.filter(exchange);
         }
 

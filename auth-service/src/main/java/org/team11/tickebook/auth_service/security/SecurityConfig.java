@@ -43,6 +43,13 @@ public class SecurityConfig {
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/internal/**").permitAll()
                                 .requestMatchers("/actuator/**").permitAll()
+                                .requestMatchers(
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html",
+                                        "/swagger-resources/**",
+                                        "/webjars/**"
+                                ).permitAll()
                                 // ROLE BASED
 //                        .requestMatchers("/admin/**").hasRole("ADMIN")
 //                        .requestMatchers("/theater/**").hasRole("THEATEROWNER")

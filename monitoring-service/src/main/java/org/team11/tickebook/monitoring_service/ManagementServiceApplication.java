@@ -1,4 +1,4 @@
-package org.team11.tickebook.management_service;
+package org.team11.tickebook.monitoring_service;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;

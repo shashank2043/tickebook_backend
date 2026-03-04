@@ -31,6 +31,11 @@ public class SecurityConfig {
                         // PUBLIC
                         .pathMatchers("/auth/**").permitAll()
                         .pathMatchers("/eureka/**").permitAll()
+                        .pathMatchers("/actuator/**").permitAll()
+                        .pathMatchers("/webjars/**").permitAll()
+                        .pathMatchers("/swagger/**").permitAll()
+                        .pathMatchers("/swagger-ui.html").permitAll()
+                        .pathMatchers("/swagger-ui/**","/v3/api-docs/**","/**-service-swagger/**").permitAll()
 
                         // ADMIN
                         .pathMatchers(
@@ -64,6 +69,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.POST,"/api/movies/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.PUT, "/api/movies/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, "/api/movies/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .anyExchange().authenticated()
                 )
                 .build();

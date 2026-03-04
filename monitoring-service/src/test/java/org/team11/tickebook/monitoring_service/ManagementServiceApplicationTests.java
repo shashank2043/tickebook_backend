@@ -1,4 +1,4 @@
-package org.team11.tickebook.management_service;
+package org.team11.tickebook.monitoring_service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

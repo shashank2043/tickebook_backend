@@ -3,3 +3,32 @@ spring:
     name: api-gateway
   config:
     import: optional:configserver:http://localhost:8888
+  cloud:
+    gateway:
+      server:
+        webflux:
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins:
+                  - http://localhost:8080
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowedHeaders: "*"
+                allowCredentials: true
+#          routes:
+#            - id: admin-service-swagger
+#              uri: lb://ADMIN-SERVICE
+#              predicates:
+#                - Path=/swagger/admin-service/**
+#              filters:
+#                - RewritePath=/swagger/admin-service/(?<segment>.*), /${segment}
+#springdoc:
+#  swagger-ui:
+#    urls:
+#      - name: admin-service
+#        url: /swagger/admin-service/v3/api-docs

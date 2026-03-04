@@ -72,6 +72,6 @@
     <module>show-service</module>
     <module>auth-service</module>
     <module>payment-service</module>
-    <module>management-service</module>
+    <module>monitoring-service</module>
 </modules>
 </project>
