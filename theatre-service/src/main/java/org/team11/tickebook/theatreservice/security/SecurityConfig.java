@@ -23,8 +23,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Allow actuator or internal endpoints if needed
-                        // .requestMatchers("/actuator/**").permitAll()
-
+                         .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**"
+                        ).permitAll()
                         // Everything else is locked
                         .requestMatchers("/internal/**").permitAll()
                         .requestMatchers("/api/theatres/**").hasRole("THEATREOWNER")

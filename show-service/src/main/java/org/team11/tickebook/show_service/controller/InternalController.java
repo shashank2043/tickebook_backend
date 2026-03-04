@@ -1,5 +1,6 @@
 package org.team11.tickebook.show_service.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.team11.tickebook.show_service.service.ShowSeatService;
 @RestController
 @RequestMapping("/internal/seats")
 @RequiredArgsConstructor
+@Hidden
 public class InternalController {
 
     private final ShowSeatService seatService;
