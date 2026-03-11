@@ -10,6 +10,7 @@
 	<artifactId>mail-server</artifactId>
 	<name>mail-server</name>
 	<description>Mail server</description>
+	<packaging>jar</packaging>
 	<url/>
 	<licenses>
 		<license/>

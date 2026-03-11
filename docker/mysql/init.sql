@@ -1,0 +1,3 @@
+
+GRANT ALL PRIVILEGES ON *.* TO 'shashank'@'%';
+FLUSH PRIVILEGES;

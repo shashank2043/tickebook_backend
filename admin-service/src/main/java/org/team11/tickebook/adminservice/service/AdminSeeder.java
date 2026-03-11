@@ -11,14 +11,11 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class AdminSeeder implements CommandLineRunner {
+public class AdminSeeder {
 
     private final AdminProfileRepository repo;
 
-    @Override
-    public void run(String... args) {
-
-        UUID userId = UUID.fromString("a23b12fa-5105-4d3b-b2cf-22b55d765418");
+    public void createAdmin(UUID userId) {
 
         if (repo.findByUserId(userId).isEmpty()) {
 

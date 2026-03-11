@@ -61,6 +61,7 @@
         </dependencies>
     </dependencyManagement>
 <modules>
+    <module>common-dtos</module>
     <module>mail-server</module>
     <module>discovery-server</module>
     <module>admin-service</module>
