@@ -4,7 +4,6 @@ spring:
       server:
         git:
           uri: https://github.com/shashank2043/tickebook_config
-          default-label: docker
           username: shashank2043
           password: ${GIT_TOKEN}
 management:
