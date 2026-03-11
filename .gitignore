@@ -44,3 +44,4 @@ build/
 
 /.metadata/
 /htmlReport/
+/.env

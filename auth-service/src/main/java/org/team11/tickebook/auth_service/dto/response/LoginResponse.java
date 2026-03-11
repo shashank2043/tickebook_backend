@@ -1,4 +1,4 @@
-package org.team11.tickebook.commondtos.authservice;
+package org.team11.tickebook.auth_service.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -19,7 +19,7 @@ import org.team11.tickebook.auth_service.dto.response.RegistrationResult;
 import org.team11.tickebook.auth_service.security.CustomUserDetailsService;
 import org.team11.tickebook.auth_service.security.JwtUtil;
 import org.team11.tickebook.auth_service.service.AuthService;
-import org.team11.tickebook.commondtos.authservice.LoginResponse;
+import org.team11.tickebook.auth_service.dto.response.LoginResponse;
 
 @RestController
 @RequestMapping("/auth")
