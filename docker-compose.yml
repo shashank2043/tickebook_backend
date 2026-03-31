@@ -63,10 +63,12 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: config-server
+    image: shashank2043/tickebook_backend-config-server:latest
     ports:
       - "8888:8888"
     environment:
       GIT_TOKEN: ${GIT_TOKEN}
+      SPRING_PROFILES_ACTIVE: docker
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8888/actuator/health" ]
       interval: 10s
@@ -79,8 +81,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: auth-service
+    image: shashank2043/tickebook_backend-auth-service:latest
     ports:
       - "8081:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       mysql:
         condition: service_healthy
@@ -97,8 +102,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: discovery-server
+    image: shashank2043/tickebook_backend-discovery-server:latest
     ports:
       - "8761:8761"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       config-server:
         condition: service_healthy
@@ -115,8 +123,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: monitoring-service
+    image: shashank2043/tickebook_backend-monitoring-service:latest
     ports:
       - "9090:9090"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       config-server:
         condition: service_healthy
@@ -129,8 +140,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: admin-service
+    image: shashank2043/tickebook_backend-admin-service:latest
     ports:
       - "8082:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       mysql:
         condition: service_healthy
@@ -146,8 +160,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: consumer-service
+    image: shashank2043/tickebook_backend-consumer-service:latest
     ports:
       - "8083:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       mysql:
         condition: service_healthy
@@ -161,10 +178,12 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: mail-server
+    image: shashank2043/tickebook_backend-mail-server:latest
     ports:
       - "8090:8080"
     environment:
       SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       config-server:
         condition: service_healthy
@@ -178,8 +197,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: movie-service
+    image: shashank2043/tickebook_backend-movie-service:latest
     ports:
       - "8084:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       mysql:
         condition: service_healthy
@@ -195,8 +217,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: payment-service
+    image: shashank2043/tickebook_backend-payment-service:latest
     ports:
       - "8085:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       mysql:
         condition: service_healthy
@@ -210,8 +235,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: show-service
+    image: shashank2043/tickebook_backend-show-service:latest
     ports:
       - "8086:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       mysql:
         condition: service_healthy
@@ -225,8 +253,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: theatre-service
+    image: shashank2043/tickebook_backend-theatre-service:latest
     ports:
       - "8087:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       mysql:
         condition: service_healthy
@@ -240,8 +271,11 @@ services:
       dockerfile: Dockerfile
       args:
         SERVICE_NAME: api-gateway
+    image: shashank2043/tickebook_backend-api-gateway:latest
     ports:
       - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
     depends_on:
       mysql:
         condition: service_healthy
