@@ -10,6 +10,8 @@ import org.team11.tickebook.adminservice.client.TheatreClient;
 import org.team11.tickebook.adminservice.dto.TheatreApprovalRequestDto;
 import org.team11.tickebook.adminservice.dto.TheatreApprovalResponseDto;
 import org.team11.tickebook.adminservice.dto.TheatreApprovalReviewDto;
+import org.team11.tickebook.adminservice.exception.AdminProfileNotFoundException;
+import org.team11.tickebook.adminservice.exception.TheatreApprovalRequestNotFoundException;
 import org.team11.tickebook.adminservice.model.AdminProfile;
 import org.team11.tickebook.adminservice.model.ApprovalStatus;
 import org.team11.tickebook.adminservice.model.TheatreApprovalRequest;
@@ -54,7 +56,7 @@ public class TheatreApprovalRequestServiceImpl implements TheatreApprovalRequest
             Authentication authentication) {
 
         TheatreApprovalRequest request = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Approval request not found"));
+                .orElseThrow(() -> new TheatreApprovalRequestNotFoundException("Approval request not found"));
 
         request.setStatus(dto.getStatus());
         request.setRemarks(dto.getRemarks());
@@ -66,7 +68,7 @@ public class TheatreApprovalRequestServiceImpl implements TheatreApprovalRequest
 //        System.out.println(userId);
         AdminProfile admin = adminProfileRepository
                 .findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Admin profile not found"));
+                .orElseThrow(() -> new AdminProfileNotFoundException("Admin profile not found"));
 
         request.setReviewedBy(admin);
 
@@ -87,7 +89,7 @@ public class TheatreApprovalRequestServiceImpl implements TheatreApprovalRequest
     public TheatreApprovalResponseDto getById(UUID id) {
 
         TheatreApprovalRequest request = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Approval request not found"));
+                .orElseThrow(() -> new TheatreApprovalRequestNotFoundException("Approval request not found"));
 
         return mapToResponse(request);
     }

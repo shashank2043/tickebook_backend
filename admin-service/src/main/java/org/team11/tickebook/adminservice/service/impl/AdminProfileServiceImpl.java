@@ -2,6 +2,7 @@ package org.team11.tickebook.adminservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.team11.tickebook.adminservice.exception.AdminProfileNotFoundException;
 import org.team11.tickebook.adminservice.model.AdminProfile;
 import org.team11.tickebook.adminservice.repository.AdminProfileRepository;
 import org.team11.tickebook.adminservice.service.AdminProfileService;
@@ -25,7 +26,7 @@ public class AdminProfileServiceImpl implements AdminProfileService {
     @Override
     public AdminProfile updateAdmin(UUID id, AdminProfile updated) {
         AdminProfile existing = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Admin profile not found"));
+                .orElseThrow(() -> new AdminProfileNotFoundException("Admin profile not found"));
 
         existing.setRegion(updated.getRegion());
         existing.setCanApproveRoles(updated.getCanApproveRoles());
@@ -41,7 +42,7 @@ public class AdminProfileServiceImpl implements AdminProfileService {
     @Override
     public void deleteAdmin(UUID id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Admin profile not found");
+            throw new AdminProfileNotFoundException("Admin profile not found");
         }
         repository.deleteById(id);
     }
