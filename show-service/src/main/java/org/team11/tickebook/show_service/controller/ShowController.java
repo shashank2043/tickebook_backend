@@ -48,8 +48,8 @@ public class ShowController {
         return ResponseEntity.ok(showService.getAllShows());
     }
     @GetMapping("/{showid}")
-    public ResponseEntity<Show> getShow(@PathVariable UUID id){
-        return ResponseEntity.ok(showService.getShow(id));
+    public ResponseEntity<Show> getShow(@PathVariable UUID showid){
+        return ResponseEntity.ok(showService.getShow(showid));
     }
     // UPDATE SHOW
     @PutMapping("/{showId}")
