@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.team11.tickebook.adminservice.client.AuthClient;
 import org.team11.tickebook.adminservice.dto.RoleApprovalRequestDto;
 import org.team11.tickebook.adminservice.dto.RoleApprovalResponseDto;
+import org.team11.tickebook.adminservice.exception.RoleRequestNotFoundException;
 import org.team11.tickebook.adminservice.model.ApprovalStatus;
 import org.team11.tickebook.adminservice.model.RoleElevationRequest;
 import org.team11.tickebook.adminservice.repository.AdminProfileRepository;
@@ -78,7 +79,7 @@ public class RoleApprovalRequestServiceImpl
     public RoleApprovalResponseDto getById(UUID id) {
         return repository.findById(id)
                 .map(this::mapToResponse)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(() -> new RoleRequestNotFoundException("Request not found"));
     }
 
     @Override

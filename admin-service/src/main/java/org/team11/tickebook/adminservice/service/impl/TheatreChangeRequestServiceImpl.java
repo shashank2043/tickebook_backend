@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.team11.tickebook.adminservice.dto.TheatreChangeRequestDto;
 import org.team11.tickebook.adminservice.dto.TheatreChangeResponseDto;
+import org.team11.tickebook.adminservice.exception.AdminProfileNotFoundException;
+import org.team11.tickebook.adminservice.exception.TheatreChangeRequestNotFoundException;
 import org.team11.tickebook.adminservice.model.AdminProfile;
 import org.team11.tickebook.adminservice.model.ApprovalStatus;
 import org.team11.tickebook.adminservice.model.TheatreChangeRequest;
@@ -58,11 +60,11 @@ public class TheatreChangeRequestServiceImpl
 
         TheatreChangeRequest request = repository.findById(requestId)
                 .orElseThrow(() ->
-                        new RuntimeException("Change request not found"));
+                        new TheatreChangeRequestNotFoundException("Change request not found"));
 
         AdminProfile admin = adminProfileRepository.findById(adminId)
                 .orElseThrow(() ->
-                        new RuntimeException("Admin not found"));
+                        new AdminProfileNotFoundException("Admin not found"));
 
         request.setStatus(status);
         request.setReviewedBy(admin);
