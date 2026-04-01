@@ -4,8 +4,7 @@ spring:
       server:
         git:
           uri: https://github.com/shashank2043/tickebook_config
-          username: shashank2043
-          password: ${GIT_TOKEN}
+          default-label: main
 management:
   endpoints:
     web:

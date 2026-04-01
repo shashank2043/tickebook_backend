@@ -1,7 +1,11 @@
 package org.team11.tickebook.auth_service.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class RegistrationRequest {
+	@NotBlank
 	private String email;
+	@NotBlank
 	private  String password;
 	private String firstName;
 	private String lastName;

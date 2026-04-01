@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  init.sql: |2-
+    GRANT ALL PRIVILEGES ON *.* TO 'shashank'@'%';
+    FLUSH PRIVILEGES;
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: mysql
+  name: mysql-cm1

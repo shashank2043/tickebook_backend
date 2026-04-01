@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: mail-server
+  profiles:
+    active: dev
