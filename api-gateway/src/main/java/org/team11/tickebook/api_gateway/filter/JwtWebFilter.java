@@ -75,7 +75,9 @@ public class JwtWebFilter implements WebFilter {
                                     .toList()
                     );
             ServerWebExchange mutatedExchange = exchange.mutate()
-                    .request(r -> r.header("X-User-Id", userId))
+                    .request(r -> {
+                        r.headers(headers -> headers.add("X-User-Id", userId));
+                    })
                     .build();
 
             return chain.filter(mutatedExchange)
