@@ -1,9 +1,5 @@
 package org.team11.tickebook.auth_service.controller;
 
-import java.util.List;
-import java.util.UUID;
-
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -17,7 +13,9 @@ import org.team11.tickebook.auth_service.dto.request.RoleApprovalRequestDto;
 import org.team11.tickebook.auth_service.dto.response.RoleApprovalResponseDto;
 import org.team11.tickebook.auth_service.security.CustomUserDetails;
 import org.team11.tickebook.auth_service.service.UserService;
-import org.team11.tickebook.auth_service.service.impl.UserServiceImpl;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/user")
@@ -54,7 +52,12 @@ public class UserController {
             Authentication authentication,
             @RequestBody OtpRequest req) {
         String email = authentication.getName();
-        service.validateOtp(email, req.getOtp());
+        Boolean isValid = service.validateOtp(email, req.getOtp());
+        if (!isValid) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid or expired OTP");
+        }
         return ResponseEntity.ok("Otp verified");
     }
 
