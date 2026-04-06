@@ -1,22 +1,28 @@
 package org.team11.tickebook.auth_service.model.entity;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.team11.tickebook.auth_service.model.enums.Role;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 @Entity
-@Table(name = "user")
+@Table(name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "uk_user_email", columnNames = "email")
+        },
+        indexes = {
+                @Index(name = "idx_user_email", columnList = "email")
+        })
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-	//	User
+    //	User
 //	id : UUID
 //	email : String
 //	password : String
@@ -34,25 +40,27 @@ public class User {
 //	passwordChangedAt : LocalDateTime
 //	createdAt : LocalDateTime
 //	updatedAt : LocalDateTime
-	@Id
-	@GeneratedValue
-	private UUID id;
-	private String email;
-	private String password;
-	private int tokenVersion;
-	@ElementCollection(targetClass = Role.class)
-	@Enumerated(EnumType.STRING)
-	private List<Role> roles;
-	private String firstName;
-	private String lastName;
-	private String phoneNumber;
-	private boolean emailVerified;
-	private boolean accountLocked;
-	private int failedLoginAttempts;
-	private boolean isActive;
-	private boolean isDeleted;
-	private LocalDateTime lastLoginAt;
-	private LocalDateTime passwordChangedAt;
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
+    @Id
+    @GeneratedValue
+    private UUID id;
+    @Column(unique = true, nullable = false)
+    private String email;
+    @Column(nullable = false)
+    private String password;
+    private int tokenVersion;
+    @ElementCollection(targetClass = Role.class)
+    @Enumerated(EnumType.STRING)
+    private List<Role> roles;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private boolean emailVerified;
+    private boolean accountLocked;
+    private int failedLoginAttempts;
+    private boolean isActive;
+    private boolean isDeleted;
+    private LocalDateTime lastLoginAt;
+    private LocalDateTime passwordChangedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
