@@ -161,13 +161,13 @@ public class ShowServiceImplTest {
 
         Show show = new Show();
         show.setId(showId);
-        show.setActive(true);
+        show.setIsActive(true);
 
         when(showRepository.findById(showId)).thenReturn(Optional.of(show));
 
         service.deleteShow(showId);
 
-        assertFalse(show.isActive());
+        assertFalse(show.getIsActive());
         verify(showRepository).save(show);
     }
 

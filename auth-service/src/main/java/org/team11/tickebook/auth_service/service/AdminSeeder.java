@@ -26,7 +26,7 @@ public class AdminSeeder implements CommandLineRunner {
             User admin = new User();
             admin.setEmail("admin@tickebook.com");
             admin.setPassword(passwordEncoder.encode("admin123"));
-            admin.setRoles(List.of(Role.ADMIN));
+            admin.setRoles(List.of(Role.ADMIN,Role.THEATREOWNER,Role.USER));
             //added just now
             admin.setActive(true);
             userRepository.save(admin);

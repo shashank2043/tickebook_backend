@@ -27,5 +27,5 @@ public class Show {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    private boolean isActive;
+    private Boolean isActive;
 }

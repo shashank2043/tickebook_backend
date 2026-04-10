@@ -36,7 +36,7 @@ public class ShowServiceImpl implements ShowService {
         show.setScreenId(screenId);
         show.setStartTime(start);
         show.setEndTime(end);
-        show.setActive(true);
+        show.setIsActive(true);
         Show savedShow = showRepository.save(show);
         List<SeatDto> seats = theatreClient.getSeatsByScreen(screenId);
         List<ShowSeat> showSeats = seats.stream().map(seat -> {
@@ -77,7 +77,7 @@ public class ShowServiceImpl implements ShowService {
         Show show = showRepository.findById(showId)
                 .orElseThrow(() -> new RuntimeException("Show not found"));
 
-        show.setActive(false);
+        show.setIsActive(false);
 
         showRepository.save(show);
     }

@@ -1,4 +1,4 @@
-package org.team11.tickebook.theatreservice.clients;
+package org.team11.tickebook.consumerservice.client;
 
 import feign.RequestInterceptor;
 import jakarta.servlet.http.Cookie;

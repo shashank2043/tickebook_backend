@@ -11,9 +11,9 @@ import org.team11.tickebook.consumerservice.dto.ShowSeat;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "SHOW-SERVICE")
+@FeignClient(name = "SHOW-SERVICE",configuration = FeignConfig.class)
 public interface ShowClient {
-    @GetMapping
+    @GetMapping("/api/shows")
     public List<Show> getAllShows();
     @GetMapping("/api/shows/{showid}")
     public Show getShow(@PathVariable UUID uuid);

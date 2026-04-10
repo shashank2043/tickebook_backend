@@ -22,6 +22,15 @@ public class FeignConfig {
 
             HttpServletRequest request = attrs.getRequest();
 
+            // 1. Check Authorization header first
+            String authHeader = request.getHeader("Authorization");
+
+            if (authHeader != null && !authHeader.isBlank()) {
+                requestTemplate.header("Authorization", authHeader);
+                return;
+            }
+
+            // 2. Fallback to cookies
             if (request.getCookies() == null) return;
 
             for (Cookie cookie : request.getCookies()) {

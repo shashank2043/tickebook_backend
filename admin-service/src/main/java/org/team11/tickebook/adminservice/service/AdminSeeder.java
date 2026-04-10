@@ -1,7 +1,6 @@
 package org.team11.tickebook.adminservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.team11.tickebook.adminservice.model.AdminProfile;
 import org.team11.tickebook.adminservice.repository.AdminProfileRepository;

@@ -28,4 +28,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleAnyRuntimeException(RuntimeException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleAnyException(Exception ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
 }
