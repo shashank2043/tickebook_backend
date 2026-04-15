@@ -4,11 +4,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.team11.tickebook.adminservice.client.fallback.AuthClientFallback;
 import org.team11.tickebook.adminservice.model.Role;
 
 import java.util.UUID;
 
-@FeignClient(name = "AUTH-SERVICE")
+@FeignClient(name = "AUTH-SERVICE", fallback = AuthClientFallback.class)
 public interface AuthClient {
 
     @PutMapping("/internal/user-role")

@@ -1,7 +1,7 @@
 package org.team11.tickebook.auth_service.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -14,26 +14,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.team11.tickebook.auth_service.dto.request.LoginRequest;
 import org.team11.tickebook.auth_service.dto.request.RegistrationRequest;
+import org.team11.tickebook.auth_service.dto.response.LoginResponse;
 import org.team11.tickebook.auth_service.dto.response.RegistrationResponse;
 import org.team11.tickebook.auth_service.dto.response.RegistrationResult;
 import org.team11.tickebook.auth_service.security.CustomUserDetailsService;
 import org.team11.tickebook.auth_service.security.JwtUtil;
 import org.team11.tickebook.auth_service.service.AuthService;
-import org.team11.tickebook.auth_service.dto.response.LoginResponse;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-    @Autowired
-    private AuthService authService;
+    
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService userDetailsService;
+    private final AuthService authService;
+    private static final String COOKIE_NAME = "accessToken";
+    
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(), request.getPassword())
@@ -43,11 +43,12 @@ public class AuthController {
                 userDetailsService.loadUserByUsername(request.getEmail());
 
         String token = jwtUtil.generateToken(userDetails);
-        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
+        
+        ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, token)
                 .httpOnly(true)        // 🔐 JS cannot access
                 .secure(false)         // true in production (HTTPS)
                 .path("/")
-                .maxAge(60 * 60)       // 1 hour
+                .maxAge(60L * 60)       // 1 hour
                 .sameSite("Strict")    // CSRF protection
                 .build();
         LoginResponse loginResponse = LoginResponse.builder()
@@ -63,11 +64,11 @@ public class AuthController {
     public ResponseEntity<RegistrationResponse> register(
             @Valid @RequestBody RegistrationRequest request) {
         RegistrationResult result = authService.register(request);
-        ResponseCookie cookie = ResponseCookie.from("accessToken", result.getToken())
+        ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, result.getToken())
                 .httpOnly(true)
                 .secure(false)     // true in prod
                 .path("/")
-                .maxAge(60 * 60)
+                .maxAge(60L * 60)
                 .sameSite("Lax")
                 .build();
         RegistrationResponse response =
@@ -84,9 +85,9 @@ public class AuthController {
                 .body(response);
     }
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
+    public ResponseEntity<String> logout() {
 
-        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
+        ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, "")
                 .httpOnly(true)
                 .secure(false)
                 .path("/")

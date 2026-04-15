@@ -12,7 +12,6 @@ import org.team11.tickebook.auth_service.kafka.UserEventProducer;
 import org.team11.tickebook.auth_service.model.entity.User;
 import org.team11.tickebook.auth_service.model.enums.Role;
 import org.team11.tickebook.auth_service.repository.UserRepository;
-import org.team11.tickebook.auth_service.service.AdminSeeder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

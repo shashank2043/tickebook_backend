@@ -52,7 +52,7 @@ public class UserController {
             Authentication authentication,
             @RequestBody OtpRequest req) {
         String email = authentication.getName();
-        Boolean isValid = service.validateOtp(email, req.getOtp());
+        boolean isValid = service.validateOtp(email, req.getOtp());
         if (!isValid) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)

@@ -2,7 +2,6 @@ package org.team11.tickebook.adminservice.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.team11.tickebook.adminservice.client.AuthClient;
@@ -16,7 +15,6 @@ import org.team11.tickebook.adminservice.repository.RoleElevationRequestReposito
 import org.team11.tickebook.adminservice.service.RoleApprovalRequestService;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,12 +23,11 @@ import java.util.UUID;
 public class RoleApprovalRequestServiceImpl
         implements RoleApprovalRequestService {
 
-    @Autowired
-    private RoleElevationRequestRepository repository;
-    @Autowired
-    private AdminProfileRepository adminProfileRepository;
-    @Autowired
-    private AuthClient authClient;
+
+    private final RoleElevationRequestRepository repository;
+    private final AdminProfileRepository adminProfileRepository;
+    private final AuthClient authClient;
+
     @Override
     public Boolean createRequest(RoleApprovalRequestDto dto) {
         RoleElevationRequest request = new RoleElevationRequest();

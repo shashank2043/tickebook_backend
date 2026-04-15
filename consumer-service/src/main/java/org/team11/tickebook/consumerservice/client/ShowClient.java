@@ -5,13 +5,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.team11.tickebook.consumerservice.client.fallback.ShowClientFallback;
 import org.team11.tickebook.consumerservice.dto.Show;
 import org.team11.tickebook.consumerservice.dto.ShowSeat;
 
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "SHOW-SERVICE",configuration = FeignConfig.class)
+@FeignClient(name = "SHOW-SERVICE", configuration = FeignConfig.class, fallback = ShowClientFallback.class)
 public interface ShowClient {
     @GetMapping("/api/shows")
     public List<Show> getAllShows();

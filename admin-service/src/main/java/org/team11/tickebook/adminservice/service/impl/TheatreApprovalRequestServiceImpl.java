@@ -2,7 +2,6 @@ package org.team11.tickebook.adminservice.service.impl;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +26,10 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class TheatreApprovalRequestServiceImpl implements TheatreApprovalRequestService {
-    @Autowired
-    private TheatreApprovalRequestRepository repository;
-    @Autowired
-    private AdminProfileRepository adminProfileRepository; // if needed
-    @Autowired
-    private TheatreClient theatreClient;
-    @Autowired
-    private SecurityUtil securityUtil;
+    private final TheatreApprovalRequestRepository repository;
+    private final AdminProfileRepository adminProfileRepository; // if needed
+    private final TheatreClient theatreClient;
+    private final SecurityUtil securityUtil;
     @Override
     public Boolean createRequest(TheatreApprovalRequestDto dto) {
 
